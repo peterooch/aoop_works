@@ -1,7 +1,7 @@
 /**
  * 
  */
-package utilities;
+package tests;
 
 import components.Junction;
 import components.Map;
@@ -19,7 +19,7 @@ public class TestRoute {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Map map=new Map(5);
+		Map map=new Map(5,5);
 		
 		Route route=new Route(map.getJunctions().get(0), VehicleType.getRandomVehicleTypes().get(0) );
 		System.out.println(route.getJunctions());

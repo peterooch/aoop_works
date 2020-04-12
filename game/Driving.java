@@ -69,4 +69,7 @@ public class Driving {
     public void setMaxTime(int maxTime) {
         this.maxTime = maxTime;
     }
+	public ArrayList<Vehicle> getVehicles() {
+		return currentVehicles;
+	}
 }

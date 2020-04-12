@@ -31,4 +31,7 @@ public class Map {
     public boolean removeJunction(Junction junction) {
         return false;
     }
+	public ArrayList<Junction> getJunctions() {
+		return junctions;
+	}
 }

@@ -1,12 +1,20 @@
 package components;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class VehicleType {
     private String typeName;
     private int speed;
 
+    private static ArrayList<VehicleType> vehiclesTypes;
+
     public VehicleType(String typeName, int speed) {
         this.typeName = typeName;
         this.speed = speed;
+
+        if (!vehiclesTypes.contains(this))
+            vehiclesTypes.add(this);
     }
 
     public String toString() {
@@ -19,5 +27,9 @@ public class VehicleType {
 
 	public int getSpeed() {
 		return speed;
+	}
+
+	public static VehicleType getRandomVehicleTypes() {
+		return vehiclesTypes.get(new Random().nextInt(vehiclesTypes.size()));
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Random;
 import components.Junction;
 import components.Road;
 import components.VehicleType;
+import utilities.Point;
 
 public class JunctionTest {
 
