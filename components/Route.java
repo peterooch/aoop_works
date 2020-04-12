@@ -2,6 +2,11 @@ package components;
 
 import java.util.ArrayList;
 
+/**
+ * Route class
+ * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
+ */
+
 public class Route {
     private ArrayList<Junction> junctions;
     private ArrayList<Road> roads;
@@ -38,7 +43,7 @@ public class Route {
                         break;
                     }
                 }
-            }    
+            }  
         }
 
         for (Road road : roads)

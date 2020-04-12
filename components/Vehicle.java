@@ -1,5 +1,10 @@
 package components;
 
+/**
+ * Vehicle class
+ * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
+ */
+
 public class Vehicle {
     private int id;
     private VehicleType type;

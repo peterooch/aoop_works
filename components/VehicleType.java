@@ -3,6 +3,11 @@ package components;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * VehicleType class
+ * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
+ */
+
 public class VehicleType {
     private String typeName;
     private int speed;

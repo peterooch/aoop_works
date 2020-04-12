@@ -1,11 +1,26 @@
 package utilities;
 
+/**
+ * Point coordinate class
+ * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
+ */
+
 public class Point {
+    /**
+     * Minimal X/Y value
+     */
     private static final double MINIMUM = 0F;
+    /**
+     * Maximal X value
+     */
     private static final double MAXIMUM_X = 1000000F;
+    /**
+     * Maximal Y value
+     */
     private static final double MAXIMUM_Y = 800F;
     
-    private double x, y;
+    private double x;
+    private double y;
 
     public Point(double x, double y) {
         this.x = x;

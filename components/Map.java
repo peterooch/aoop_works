@@ -2,6 +2,11 @@ package components;
 
 import java.util.ArrayList;
 
+/**
+ * Map class
+ * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
+ */
+
 public class Map {
     private ArrayList<Junction> junctions;
     private ArrayList<Road> roads;

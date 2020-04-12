@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import components.Map;
 import components.Vehicle;
 
+/**
+ * Driving class
+ * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
+ */
+
 public class Driving {
     private int numOfJuncs;
     private int numOfVehicles;

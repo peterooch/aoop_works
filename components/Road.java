@@ -3,6 +3,11 @@ package components;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Road class
+ * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
+ */
+
 public class Road {
     private Junction fromJunc;
     private Junction toJunc;
