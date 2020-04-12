@@ -6,17 +6,17 @@ import java.util.Random;
 public class Road {
     private Junction fromJunc;
     private Junction toJunc;
-    private ArrayList<String> allowedVehicles;
+    private ArrayList<VehicleType> allowedVehicles;
     private boolean isOpen;
     private boolean isEnabled;
     private double length;
     private int maxSpeed;
 
-    private final int MIN_SPEED = 0;
-    private final int MAX_SPEED = 200;
+    private static final int MIN_SPEED = 0;
+    private static final int MAX_SPEED = 200;
 
     public Road(Junction from, Junction to,
-                ArrayList<String> allowed, boolean open, boolean enabled) {
+                ArrayList<VehicleType> allowed, boolean open, boolean enabled) {
         InitRoad(from, to, allowed, open, enabled);
     }
     public Road(Junction from, Junction to) {
@@ -25,7 +25,7 @@ public class Road {
     }
 
     private void InitRoad(Junction from, Junction to,
-                          ArrayList<String> allowed, boolean open, boolean enabled) {
+                          ArrayList<VehicleType> allowed, boolean open, boolean enabled) {
         fromJunc = from;
         toJunc = to;
         isOpen = open;
@@ -60,10 +60,10 @@ public class Road {
     public Junction getToJunc() {
         return toJunc;
     }
-    public void setAllowedVehicles(ArrayList<String> list) {
+    public void setAllowedVehicles(ArrayList<VehicleType> list) {
         allowedVehicles = list;
     }
-    public ArrayList<String> getAllowedVehicle() {
+    public ArrayList<VehicleType> getAllowedVehicle() {
         return allowedVehicles;
     }
     public void setIsOpen(boolean open) {
@@ -90,8 +90,8 @@ public class Road {
     public double getLength() {
         return length;
     }
-    public boolean addVehicleType(String type) {
-        if (type == null || type.isBlank() || allowedVehicles.contains(type))
+    public boolean addVehicleType(VehicleType type) {
+        if (type == null || allowedVehicles.contains(type))
             return false;
         
         allowedVehicles.add(type);

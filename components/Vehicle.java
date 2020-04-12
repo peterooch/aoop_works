@@ -2,7 +2,7 @@ package components;
 
 public class Vehicle {
     private int id;
-    private String type;
+    private VehicleType type;
     private int speed;
     private Route currentRoute;
     private Junction lastJunction;
@@ -10,7 +10,7 @@ public class Vehicle {
     private boolean movesNow;
     private double spentTime;
 
-    public Vehicle(int id, String type, Junction lastJunction) {
+    public Vehicle(int id, VehicleType type, Junction lastJunction) {
         this.id = id;
         this.type = type;
         this.lastJunction = lastJunction;
@@ -31,10 +31,10 @@ public class Vehicle {
     public int getID() {
         return id;
     }
-    public void setType(String type) {
+    public void setType(VehicleType type) {
         this.type = type;
     }
-    public String getType() {
+    public VehicleType getType() {
         return type;
     }
     public void setSpeed(int speed) {

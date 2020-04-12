@@ -16,4 +16,8 @@ public class VehicleType {
     public boolean equals(VehicleType other) {
         return typeName.equals(other.typeName);
     }
+
+	public int getSpeed() {
+		return speed;
+	}
 }

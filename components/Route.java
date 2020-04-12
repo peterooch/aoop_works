@@ -6,15 +6,15 @@ public class Route {
     private ArrayList<Junction> junctions;
     private ArrayList<Road> roads;
     private double delay;
-    private String vehicleType;
+    private VehicleType vehicleType;
 
-    public Route(ArrayList<Junction> junctions, ArrayList<Road> roads, String vehicleType) {
+    public Route(ArrayList<Junction> junctions, ArrayList<Road> roads, VehicleType vehicleType) {
         this.junctions = junctions;
         this.roads = roads;
         this.vehicleType = vehicleType;
         delay = calcDelay();
     }
-    public Route(Junction start, Junction end, String vehicleType) {
+    public Route(Junction start, Junction end, VehicleType vehicleType) {
         /** To be implemented */
         this.vehicleType = vehicleType;
     }
@@ -25,6 +25,25 @@ public class Route {
         return junctions.get(junctions.size() - 1);
     }
     public double calcDelay() {
-        return 0.0;
+        delay = 0.0;
+   
+        for (Junction junction : junctions) {
+            if (junction.getHasLights()) {
+                delay += junction.getDelay() * (junction.getEnteringRoads().size() - 1);
+            }
+            else {
+                for (Road road : roads) {
+                    if (road.getToJunc().equals(junction)) {
+                        delay += junction.getEnteringRoads().indexOf(road);
+                        break;
+                    }
+                }
+            }    
+        }
+
+        for (Road road : roads)
+            delay += road.getLength() / Math.min(road.getMaxSpeed(), vehicleType.getSpeed());
+
+        return delay;
     }
 }

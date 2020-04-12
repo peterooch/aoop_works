@@ -1,6 +1,7 @@
 package components;
 
 import java.util.ArrayList;
+import java.util.Random;
 import utilities.Point;
 
 public class Junction {
@@ -15,6 +16,7 @@ public class Junction {
     public Junction(String name, Point loc) {
         junctionName = name;
         location = loc;
+        delay = new Random().nextInt(10) + 1;
     }
     public void setJunctionName(String name) {
         junctionName = name;
@@ -59,11 +61,17 @@ public class Junction {
         return delay;
     }
     public void changeLight() {
-        /** To be implemented */
+        enteringRoads.get(0).setIsOpen(true);
+
+        for (int i = 0; i < enteringRoads.size(); i++)
+            enteringRoads.get(i).setIsOpen(false);
     }
     public boolean checkAvailability(Road road) {
-        /** To be implemented */
-        return false;
+        for (Road r : enteringRoads) {
+            if (vehicles.contains(r))
+                return r.equals(road);
+        }
+        return true;
     }
     public String toString() {
         return "Junction name: " + junctionName + ", Location: " + location.toString();
