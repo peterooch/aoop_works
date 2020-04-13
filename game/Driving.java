@@ -1,9 +1,11 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import components.Map;
 import components.Vehicle;
+import components.VehicleType;
 
 /**
  * Driving class
@@ -22,12 +24,27 @@ public class Driving {
         this.numOfJuncs = numOfJuncs;
         this.numOfVehicles = numOfVehicles;
         this.maxTime = maxTime;
+
+        currentMap = new Map(numOfJuncs, numOfJuncs);
+        currentVehicles = new ArrayList<Vehicle>(numOfVehicles);
+        addVehicles(numOfVehicles);
     }
     public void addMap() {
+        int count = new Random().nextInt(16) + 10;
 
+        currentMap = new Map(count, count);
+    }
+    private void addVehicles(int count) {
+        int current_amount = currentVehicles.size();
+
+        for (int i = 0; i < count; i++) {
+            currentVehicles.add(new Vehicle(current_amount + i,
+                                            VehicleType.getRandomVehicleType(),
+                                            currentMap.getJunctions().get(new Random().nextInt(currentMap.getJunctions().size()))));
+        }
     }
     public void addVehicles() {
-
+        addVehicles(new Random().nextInt(7) + 2);
     }
     public void startDrive(int maxTime) {
 

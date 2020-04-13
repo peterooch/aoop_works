@@ -35,7 +35,7 @@ public class Road {
      */
     public Road(Junction from, Junction to) {
         Random randObj = new Random();
-        InitRoad(from, to, null, randObj.nextBoolean(), randObj.nextBoolean());
+        InitRoad(from, to, VehicleType.getRandomVehicleTypes(), randObj.nextBoolean(), randObj.nextBoolean());
     }
     /**
      * Internal Init function to be called from the public constructors, 
@@ -47,10 +47,9 @@ public class Road {
         toJunc = to;
         isOpen = open;
         isEnabled = enabled;
+        allowedVehicles = allowed;
         
         length = countLength();
-
-        allowedVehicles = (allowed != null) ? allowed : new ArrayList<VehicleType>();
         
         if (!fromJunc.getExitingRoads().contains(this))
             fromJunc.getExitingRoads().add(this);
@@ -60,6 +59,8 @@ public class Road {
         
         /** Pick random speed limit */
         maxSpeed = new Random().nextInt(12) * 5 + 55;
+
+        System.out.printf("%s object has been created\n", toString());
     }
 
     public double countLength() {

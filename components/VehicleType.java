@@ -12,39 +12,46 @@ public class VehicleType {
     private String typeName;
     private int speed;
 
-    private static ArrayList<VehicleType> vehiclesTypes = new ArrayList<>();
+    private static ArrayList<VehicleType> vehiclesTypes;
     
     static {
-        if (vehiclesTypes.size() == 0) {
-            /** Copypasta from example  */
-            vehiclesTypes.add(new VehicleType("bus", 60));
-            vehiclesTypes.add(new VehicleType("motorcycle", 120));
-            vehiclesTypes.add(new VehicleType("truck", 80));
-            vehiclesTypes.add(new VehicleType("semi-trailer", 80));
-            vehiclesTypes.add(new VehicleType("car", 90));
-            vehiclesTypes.add(new VehicleType("bicycle", 30));
-        }
+        /** Copypasta from example  */
+        vehiclesTypes = new ArrayList<VehicleType>();
+        vehiclesTypes.add(new VehicleType("bus", 60, false));
+        vehiclesTypes.add(new VehicleType("motorcycle", 120, false));
+        vehiclesTypes.add(new VehicleType("truck", 80, false));
+        vehiclesTypes.add(new VehicleType("semi-trailer", 80, false));
+        vehiclesTypes.add(new VehicleType("car", 90, false));
+        vehiclesTypes.add(new VehicleType("bicycle", 30, false));
     }
 
-    public VehicleType(String typeName, int speed) {
+    private VehicleType(String typeName, int speed, boolean add_to_list) {
         this.typeName = typeName;
         this.speed = speed;
         
-        if (!vehiclesTypes.contains(this))
+        if (add_to_list && !vehiclesTypes.contains(this))
             vehiclesTypes.add(this);
     }
     
+	public VehicleType(String typeName, int speed) {
+		this(typeName, speed, true);
+	}
+
     public String toString() {
         return "Type: " + typeName + ", Speed: " + speed;
     }
 
     public boolean equals(VehicleType other) {
-        return typeName.equals(other.typeName);
+        return typeName.equals(other.typeName) && speed == other.speed;
     }
     
 	public int getSpeed() {
         return speed;
 	}
+
+    public String getName() {
+        return typeName;
+    }
     
 	public static VehicleType getRandomVehicleType() {
 		return vehiclesTypes.get(new Random().nextInt(vehiclesTypes.size()));
@@ -52,7 +59,7 @@ public class VehicleType {
 
     public static ArrayList<VehicleType> getRandomVehicleTypes() {
         Random randObj = new Random();
-        int rand_size = (vehiclesTypes.size() > 0) ?  randObj.nextInt(vehiclesTypes.size()) + 1 : 0;
+        int rand_size = (!vehiclesTypes.isEmpty()) ?  randObj.nextInt(vehiclesTypes.size()) + 1 : 0;
         ArrayList<VehicleType> result = new ArrayList<VehicleType>(rand_size);
 
         for (int i = 0; i < rand_size; i++) {

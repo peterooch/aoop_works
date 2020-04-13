@@ -78,5 +78,11 @@ public class Vehicle {
     public double getSpentTime() {
         return spentTime;
     }
+    public boolean equals(Vehicle other) {
+        return id == other.id;
+    }
+    public String toString() {
+        return String.format("ID: %d, %s", id, type.toString());
+    }
 
 }

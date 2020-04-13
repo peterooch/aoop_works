@@ -11,15 +11,15 @@ public class Point {
     /**
      * Minimal X/Y value
      */
-    private static final double MINIMUM = 0F;
+    public static final double MINIMUM = 0F;
     /**
      * Maximal X value
      */
-    private static final double MAXIMUM_X = 1000000F;
+    public static final double MAXIMUM_X = 1000000F;
     /**
      * Maximal Y value
      */
-    private static final double MAXIMUM_Y = 800F;
+    public static final double MAXIMUM_Y = 800F;
     
     /**
      * Point's x position

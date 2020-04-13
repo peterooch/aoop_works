@@ -51,4 +51,7 @@ public class Route {
 
         return delay;
     }
+	public ArrayList<Junction> getJunctions() {
+		return junctions;
+	}
 }

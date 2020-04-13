@@ -25,6 +25,9 @@ public class Junction {
         enteringRoads = new ArrayList<>();
         exitingRoads = new ArrayList<>();
         vehicles = new ArrayList<>();
+        hasLights = true; // for now...
+
+        System.out.printf("%s object has been created\n", toString());
     }
     public void setJunctionName(String name) {
         junctionName = name;
@@ -69,7 +72,7 @@ public class Junction {
         return delay;
     }
     public void changeLight() {
-        if (enteringRoads.size() == 0) {
+        if (enteringRoads.isEmpty()) {
             System.out.printf("%s: No roads enter the junction\n", toString());
             return;
         }
@@ -78,6 +81,11 @@ public class Junction {
         System.out.printf("%s : green light\n", first.toString());
         /** Shift them all */
         enteringRoads.remove(first);
+
+        for (Road road : enteringRoads) {
+            road.setIsOpen(false);
+        }
+
         enteringRoads.add(first);
 
     }
