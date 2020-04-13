@@ -22,6 +22,9 @@ public class Junction {
         junctionName = name;
         location = loc;
         delay = new Random().nextInt(10) + 1;
+        enteringRoads = new ArrayList<>();
+        exitingRoads = new ArrayList<>();
+        vehicles = new ArrayList<>();
     }
     public void setJunctionName(String name) {
         junctionName = name;
@@ -66,10 +69,17 @@ public class Junction {
         return delay;
     }
     public void changeLight() {
-        enteringRoads.get(0).setIsOpen(true);
+        if (enteringRoads.size() == 0) {
+            System.out.printf("%s: No roads enter the junction\n", toString());
+            return;
+        }
+        Road first = enteringRoads.get(0);
+        first.setIsOpen(true);
+        System.out.printf("%s : green light\n", first.toString());
+        /** Shift them all */
+        enteringRoads.remove(first);
+        enteringRoads.add(first);
 
-        for (int i = 0; i < enteringRoads.size(); i++)
-            enteringRoads.get(i).setIsOpen(false);
     }
     public boolean checkAvailability(Road road) {
         for (Road r : enteringRoads) {
@@ -79,9 +89,16 @@ public class Junction {
         return true;
     }
     public String toString() {
-        return "Junction name: " + junctionName + ", Location: " + location.toString();
+        return "Junction " + junctionName;
     }
     public boolean equals(Junction other) {
         return junctionName.equals(other.junctionName) && location.equals(other.location);
     }
+	public void setLightsOn() {
+        hasLights = true;
+        if (enteringRoads.size() > 0)
+            System.out.printf("%s traffic lights ON, Delay time: %d\n", toString(), delay);
+        else
+            System.out.printf("%s no entry roads, no lights exist to be turned on\n", toString());
+	}
 }

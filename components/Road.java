@@ -17,18 +17,30 @@ public class Road {
     private double length;
     private int maxSpeed;
 
-    private static final int MIN_SPEED = 0;
-    private static final int MAX_SPEED = 200;
-
+    
+    /**
+     * 
+     * @param from      The road entrance junction
+     * @param to        The road exit junction
+     * @param allowed   what kind of vehicles are permitted
+     * @param open      is the road open to traffic
+     * @param enabled   is the road enabled (?)
+     */
     public Road(Junction from, Junction to,
                 ArrayList<VehicleType> allowed, boolean open, boolean enabled) {
         InitRoad(from, to, allowed, open, enabled);
     }
+    /**
+     * See the {@link #Road(Junction, Junction, ArrayList, boolean, boolean)} Constructor for more info
+     */
     public Road(Junction from, Junction to) {
         Random randObj = new Random();
         InitRoad(from, to, null, randObj.nextBoolean(), randObj.nextBoolean());
     }
-
+    /**
+     * Internal Init function to be called from the public constructors, 
+     * See the {@link #Road(Junction, Junction, ArrayList, boolean, boolean)} Constructor for more info
+     */
     private void InitRoad(Junction from, Junction to,
                           ArrayList<VehicleType> allowed, boolean open, boolean enabled) {
         fromJunc = from;
@@ -38,10 +50,16 @@ public class Road {
         
         length = countLength();
 
-        if (allowed != null)
-        {
-            allowedVehicles = allowed;
-        }
+        allowedVehicles = (allowed != null) ? allowed : new ArrayList<VehicleType>();
+        
+        if (!fromJunc.getExitingRoads().contains(this))
+            fromJunc.getExitingRoads().add(this);
+
+        if (!toJunc.getEnteringRoads().contains(this))
+            toJunc.getEnteringRoads().add(this);
+        
+        /** Pick random speed limit */
+        maxSpeed = new Random().nextInt(12) * 5 + 55;
     }
 
     public double countLength() {
@@ -83,11 +101,8 @@ public class Road {
     public boolean getIsEnabled() {
         return isEnabled;
     }
-    public boolean setMaxSpeed(int speed) {
-        if (speed < MIN_SPEED || speed > MAX_SPEED)
-            return false;
+    public void setMaxSpeed(int speed) {
         maxSpeed = speed;
-        return true;
     }
     public int getMaxSpeed() {
         return maxSpeed;
@@ -103,7 +118,7 @@ public class Road {
         return true;
     }
     public String toString() {
-        return "From Junction: " + fromJunc.toString() + ", To Junction: " + toJunc.toString();
+        return String.format("Road %s -> %s", fromJunc.getJunctionName(), toJunc.getJunctionName());
     }
     public boolean equals(Road other) {
         return fromJunc.equals(other.fromJunc) && toJunc.equals(other.toJunc);

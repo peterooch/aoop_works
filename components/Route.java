@@ -17,7 +17,7 @@ public class Route {
         this.junctions = junctions;
         this.roads = roads;
         this.vehicleType = vehicleType;
-        delay = calcDelay();
+        calcDelay();
     }
     public Route(Junction start, Junction end, VehicleType vehicleType) {
         /** To be implemented */
