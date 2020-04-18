@@ -1,7 +1,11 @@
 package components;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 /**
  * Vehicle class
+ * 
  * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
  */
 
@@ -19,6 +23,15 @@ public class Vehicle {
         this.id = id;
         this.type = type;
         this.lastJunction = lastJunction;
+        System.out.printf("%s, ID: %d has been created and placed at %s\n", type, id, lastJunction);
+
+        Random randObj = new Random();
+
+        currentRoute = new Route(new ArrayList<Junction>(), new ArrayList<Road>(), type);
+
+        int road_count = randObj.nextInt(6) + 5;
+        int roads_added = 0;
+        currentRoute.getJunctions().add(lastJunction); 
     }
 
     public void move() {

@@ -25,7 +25,7 @@ public class Driving {
         this.numOfVehicles = numOfVehicles;
         this.maxTime = maxTime;
 
-        currentMap = new Map(numOfJuncs, numOfJuncs);
+        currentMap = new Map(numOfJuncs);
         currentVehicles = new ArrayList<Vehicle>(numOfVehicles);
         addVehicles(numOfVehicles);
     }
@@ -35,10 +35,10 @@ public class Driving {
         currentMap = new Map(count, count);
     }
     private void addVehicles(int count) {
-        int current_amount = currentVehicles.size();
+        currentVehicles = new ArrayList<Vehicle>(count);
 
         for (int i = 0; i < count; i++) {
-            currentVehicles.add(new Vehicle(current_amount + i,
+            currentVehicles.add(new Vehicle(i,
                                             VehicleType.getRandomVehicleType(),
                                             currentMap.getJunctions().get(new Random().nextInt(currentMap.getJunctions().size()))));
         }

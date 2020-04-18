@@ -19,13 +19,14 @@ public class Junction {
     private ArrayList<Road> vehicles;
 
     public Junction(String name, Point loc) {
+        Random randObj = new Random();
         junctionName = name;
         location = loc;
-        delay = new Random().nextInt(10) + 1;
+        delay = randObj.nextInt(10) + 1;
         enteringRoads = new ArrayList<>();
         exitingRoads = new ArrayList<>();
         vehicles = new ArrayList<>();
-        hasLights = true; // for now...
+        hasLights = randObj.nextBoolean();
 
         System.out.printf("%s object has been created\n", toString());
     }
