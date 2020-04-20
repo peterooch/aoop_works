@@ -6,6 +6,7 @@ import utilities.Point;
 
 /**
  * Junction class
+ * 
  * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
  */
 
@@ -30,48 +31,63 @@ public class Junction {
 
         System.out.printf("%s object has been created\n", toString());
     }
+
     public void setJunctionName(String name) {
         junctionName = name;
     }
+
     public String getJunctionName() {
         return junctionName;
     }
+
     public void setLocation(Point loc) {
         location = loc;
     }
+
     public Point getLocation() {
         return location;
     }
+
     public void setEnteringRoads(ArrayList<Road> list) {
         this.enteringRoads = list;
     }
+
     public ArrayList<Road> getEnteringRoads() {
         return enteringRoads;
     }
+
     public void setExitingRoads(ArrayList<Road> list) {
         this.exitingRoads = list;
     }
+
     public ArrayList<Road> getExitingRoads() {
         return exitingRoads;
     }
+
     public void setVehicles(ArrayList<Road> list) {
         this.vehicles = list;
     }
+
     public ArrayList<Road> getVehicles() {
         return vehicles;
     }
+
     public void setHasLights(boolean hasLights) {
         this.hasLights = hasLights;
     }
+
     public boolean getHasLights() {
         return hasLights;
     }
+
     public void setDelay(int delay) {
         this.delay = delay;
     }
+
     public int getDelay() {
         return delay;
     }
+
     public void changeLight() {
         if (enteringRoads.isEmpty()) {
             System.out.printf("%s: No roads enter the junction\n", toString());
@@ -90,6 +106,7 @@ public class Junction {
         enteringRoads.add(first);
 
     }
+
     public boolean checkAvailability(Road road) {
         for (Road r : enteringRoads) {
             if (vehicles.contains(r))
@@ -97,17 +114,24 @@ public class Junction {
         }
         return true;
     }
+
     public String toString() {
         return "Junction " + junctionName;
     }
-    public boolean equals(Junction other) {
-        return junctionName.equals(other.junctionName) && location.equals(other.location);
+
+    public boolean equals(Object other) {
+        if (other instanceof Junction) {
+            Junction other_junc = (Junction)other;
+            return junctionName.equals(other_junc.junctionName) && location.equals(other_junc.location);
+        }
+        return false;
     }
-	public void setLightsOn() {
+
+    public void setLightsOn() {
         hasLights = true;
         if (enteringRoads.size() > 0)
             System.out.printf("%s traffic lights ON, Delay time: %d\n", toString(), delay);
         else
             System.out.printf("%s no entry roads, no lights exist to be turned on\n", toString());
-	}
+    }
 }

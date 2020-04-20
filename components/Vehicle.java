@@ -23,6 +23,8 @@ public class Vehicle {
         this.id = id;
         this.type = type;
         this.lastJunction = lastJunction;
+        movesNow = false;
+        spentTime = 0;
         System.out.printf("%s, ID: %d has been created and placed at %s\n", type, id, lastJunction);
 
         Random randObj = new Random();
@@ -31,69 +33,89 @@ public class Vehicle {
 
         int road_count = randObj.nextInt(6) + 5;
         int roads_added = 0;
-        currentRoute.getJunctions().add(lastJunction); 
+        currentRoute.getJunctions().add(lastJunction);
     }
 
     public void move() {
 
     }
+
     public void status() {
 
     }
+
     public void checkIn() {
 
     }
+
     public void setID(int id) {
         this.id = id;
     }
+
     public int getID() {
         return id;
     }
+
     public void setType(VehicleType type) {
         this.type = type;
     }
+
     public VehicleType getType() {
         return type;
     }
+
     public void setSpeed(int speed) {
         this.speed = speed;
     }
+
     public int getSpeed() {
         return speed;
     }
+
     public void setCurrentRoute(Route currentRoute) {
         this.currentRoute = currentRoute;
     }
+
     public Route getCurrentRoute() {
         return currentRoute;
     }
+
     public void setLastJunction(Junction lastJunction) {
         this.lastJunction = lastJunction;
     }
+
     public Junction getLastJunction() {
         return lastJunction;
     }
+
     public void setLastRoad(Road lastRoad) {
         this.lastRoad = lastRoad;
     }
+
     public Road getLastRoad() {
         return lastRoad;
     }
+
     public void setMovesNow(boolean movesNow) {
         this.movesNow = movesNow;
     }
+
     public boolean getMovesNow() {
         return movesNow;
     }
+
     public void setSpentTime(double spentTime) {
         this.spentTime = spentTime;
     }
+
     public double getSpentTime() {
         return spentTime;
     }
-    public boolean equals(Vehicle other) {
-        return id == other.id;
+
+    public boolean equals(Object other) {
+        return (other instanceof Vehicle) && (id == ((Vehicle)other).id);
     }
+
     public String toString() {
         return String.format("ID: %d, %s", id, type.toString());
     }
