@@ -65,7 +65,7 @@ public class Vehicle {
         Junction currentJunc = lastJunction;
         
         /** Plot a random route starting from lastJunction */
-        for (int roads_added = 0, road_count = (randObj.nextInt(6) + 5); roads_added < road_count; roads_added++) {
+        for (int roads_added = 0, road_count = (randObj.nextInt(10) + 10); roads_added < road_count; roads_added++) {
             if (currentJunc.getExitingRoads().isEmpty())
                 break;
             
@@ -83,6 +83,9 @@ public class Vehicle {
         currentRoute = new Route(junctions, roads, type);
     }
 
+    /**
+     * Attempts to advance the vehicle in its route
+     */
     public void move() {
         if (spentTime == 0)
             System.out.printf("%s is starting route from %s to %s.\n", this, currentRoute.getStart(), currentRoute.getEnd());
@@ -100,18 +103,18 @@ public class Vehicle {
             spentTime += lastJunction.getDelay();
         }
     }
-
+    /** Prints the vehicles current route status */
     public void status() {
-        if (currentRoute.getRoads().indexOf(lastRoad) >= currentRoute.getRoads().size()) {
+        if (currentRoute.getRoads().indexOf(lastRoad) + 1 >= currentRoute.getRoads().size()) {
             System.out.printf("%s has completed its route, ", this);
         }
         else {
-            System.out.printf("%s is current placed at %s while on route from %s to %s, ",
+            System.out.printf("%s is currently placed at %s while on route from %s to %s, ",
                               this, lastJunction, currentRoute.getStart(), currentRoute.getEnd());
         }
-        System.out.printf("Time spent: %d\n", spentTime);
+        System.out.printf("Time spent: %f\n", spentTime);
     }
-
+    /** Moves the vehicle to next road in its route and ajust the junction data */
     public void checkIn() {
         double traveltime = lastRoad.getLength() / Math.min(lastRoad.getMaxSpeed(), type.getSpeed());
         spentTime += traveltime;

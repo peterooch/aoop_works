@@ -86,19 +86,19 @@ public class Driving {
     }
 
     /**
-     * function that starts the driving (simulates) with maximum time as parameter
-     * @param maxTime
+     * Starts the driving simulation
+     * @param maxTime the amount of turns made with all current vehicles
      */
     public void startDrive(int maxTime) {
-    	for (int i = 0 ; i < maxTime ; i++){
-            System.out.println("\nTurn: " + i);
-            for (int j = 0; j < currentVehicles.size() ; j++){
-                currentVehicles.get(j).move();
+    	for (int turn = 1 ; turn <= maxTime ; turn++){
+            System.out.println("Turn " + turn);
+            for (Vehicle vehicle : currentVehicles) {
+                vehicle.move();
             }
         }
-        System.out.println("\nStatus");
-        for (int i = 0 ; i <currentVehicles.size() ; i++){
-            currentVehicles.get(i).status();
+        System.out.println("Vehicle status after " + maxTime + " turns:");
+        for (Vehicle vehicle : currentVehicles) {
+            vehicle.status();
         }
 
     }
