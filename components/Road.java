@@ -7,6 +7,7 @@ import java.util.Random;
  * Road class
  * 
  * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
+ * @author Asaf Bereby, ID 208058412, Campus Be'er Sheva
  */
 
 public class Road {
@@ -66,6 +67,10 @@ public class Road {
         System.out.printf("%s object has been created\n", toString());
     }
 
+    /**
+     * function that counts the length of the road
+     * @return double value
+     */
     public double countLength() {
         double dx = fromJunc.getLocation().getX() - toJunc.getLocation().getX();
         double dy = fromJunc.getLocation().getY() - toJunc.getLocation().getY();
@@ -73,60 +78,117 @@ public class Road {
         return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
     }
 
+    /**
+     * setter for the entrance junction
+     * @param junction
+     */
     public void setFromJunc(Junction junction) {
         fromJunc = junction;
         length = countLength();
     }
 
+    /**
+     * setter for The road exit junction
+     * @param junction
+     */
     public void setToJunc(Junction junction) {
         toJunc = junction;
         length = countLength();
     }
 
+    /**
+     * getter for The road entrance junction
+     * @return fromJunc
+     */
     public Junction getFromJunc() {
         return fromJunc;
     }
 
+    /**
+     * getter for the road exit junction
+     * @return toJunc
+     */
     public Junction getToJunc() {
         return toJunc;
     }
 
+    /**
+     * setter for the kind of vehicles that are permitted
+     * @param allowedVehicles
+     */
     public void setAllowedVehicles(ArrayList<VehicleType> list) {
         allowedVehicles = list;
     }
 
+    /**
+     * getter for the allowed vehicles
+     * @return
+     */
     public ArrayList<VehicleType> getAllowedVehicle() {
         return allowedVehicles;
     }
 
+    /**
+     * setter for the isOpen parameter
+     * @param open
+     */
     public void setIsOpen(boolean open) {
         isOpen = open;
     }
 
+    /**
+     * getter for the isOpen parameter
+     * @return isOpen
+     */
     public boolean getIsOpen() {
         return isOpen;
     }
 
+    /**
+     * setter for the isEnabled parameter
+     * @param enabled
+     */
     public void setIsEnabled(boolean enabled) {
         isEnabled = enabled;
     }
 
+    /**
+     * getter for the isEnabled parameter
+     * @return
+     */
     public boolean getIsEnabled() {
         return isEnabled;
     }
 
+    /**
+     * setter for the maxSpeed parameter
+     * @param speed
+     */
     public void setMaxSpeed(int speed) {
         maxSpeed = speed;
     }
 
+    /**
+     * getter for the maxSpeed parameter
+     * @return
+     */
     public int getMaxSpeed() {
         return maxSpeed;
     }
 
+    /**
+     * getter for the length parameter
+     * @return
+     */
     public double getLength() {
         return length;
     }
 
+    /**
+     * function that adds vehicle type
+     * @param type
+     * @return a boolean value that says if the type was added
+     */
     public boolean addVehicleType(VehicleType type) {
         if (type == null || allowedVehicles.contains(type))
             return false;
@@ -135,10 +197,16 @@ public class Road {
         return true;
     }
 
+    /**
+     * function that returns the value
+     */
     public String toString() {
         return String.format("Road %s -> %s", fromJunc.getJunctionName(), toJunc.getJunctionName());
     }
 
+    /**
+     * function that checks if two values are equal
+     */
     public boolean equals(Object other) {
         if (other instanceof Road) {
             Road otherRoad = (Road)other;

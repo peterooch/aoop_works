@@ -9,36 +9,68 @@ import utilities.Point;
  * Map class
  * 
  * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
+ * @author Asaf Bereby, ID 208058412, Campus Be'er Sheva
  */
 
 public class Map {
+    /**
+     * map junctions
+     */
     private ArrayList<Junction> junctions;
+    /**
+     * map roads
+     */
     private ArrayList<Road> roads;
 
+    /**
+     * default constructor
+     */
     public Map() {
         this(20);
     }
 
+    /**
+     * constructor with one integer for junction amount
+     * @param junction_count
+     */
     public Map(int junction_count) {
         generateJunctions(junction_count);
         generateSeqRoads();
     }
 
+    /**
+     * constructor with two integers for junctions amount and roads amount
+     * @param junction_count
+     * @param road_count
+     */
     public Map(int junction_count, int road_count) {
         generateJunctions(junction_count);
         generateRandomRoads(road_count);
     }
 
+    /**
+     * constructor with junctions list
+     * @param junctions
+     */
     public Map(ArrayList<Junction> junctions) {
         this.junctions = junctions;
         generateSeqRoads();
     }
 
+    /**
+     * constructor with junctions list and roads list
+     * @param junctions
+     * @param roads
+     */
     public Map(ArrayList<Junction> junctions, ArrayList<Road> roads) {
         this.junctions = junctions;
         this.roads = roads;
     }
 
+    /**
+     * function that generates junctions number
+     * @param count
+     */
     private void generateJunctions(int count) {
         junctions = new ArrayList<Junction>(count);
 
@@ -50,6 +82,9 @@ public class Map {
         }
     }
 
+    /**
+     * function that generates sequential roads
+     */
     private void generateSeqRoads() {
         int junc_count = junctions.size();
         roads = new ArrayList<Road>(junc_count * (junc_count - 1));
@@ -72,6 +107,10 @@ public class Map {
         }
     }
 
+    /**
+     * function that generates random roads
+     * @param count that stands for number of roads
+     */
     private void generateRandomRoads(int count) {
         roads = new ArrayList<Road>(count);
 
@@ -96,6 +135,11 @@ public class Map {
         }
     }
 
+    /**
+     * function that adds a road to the map
+     * @param road
+     * @return boolean value that says if the map was not added due that its already in the map
+     */
     public boolean addRoad(Road road) {
         if (roads.contains(road))
             return false;
@@ -103,10 +147,20 @@ public class Map {
         return true;
     }
 
+    /**
+     * function that removes roads
+     * @param road
+     * @return a boolean value that says if the road was added
+     */
     public boolean removeRoad(Road road) {
         return roads.remove(road);
     }
 
+    /**
+     * function that adds a junction
+     * @param junction
+     * @return a boolean value that says if the junction was added
+     */
     public boolean addJunction(Junction junction) {
         if (junctions.contains(junction))
             return false;
@@ -115,6 +169,11 @@ public class Map {
         return true;
     }
 
+    /**
+     * function that removes a junction
+     * @param junction
+     * @return a boolean value that says if the junction was removed
+     */
     public boolean removeJunction(Junction junction) {
         boolean result = junctions.remove(junction);
 
@@ -124,10 +183,18 @@ public class Map {
         return result;
     }
 
+    /**
+     * junctions getter
+     * @return list of junctions
+     */
     public ArrayList<Junction> getJunctions() {
         return junctions;
     }
 
+    /**
+     * roads getter
+     * @return list of roads
+     */
     public ArrayList<Road> getRoads() {
         return roads;
     }
