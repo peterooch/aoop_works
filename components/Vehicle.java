@@ -45,10 +45,10 @@ public class Vehicle {
     private double spentTime;
 
     /** 
-     * constructor that gets three parameters:
-     * @param id
-     * @param type
-     * @param lastJunction
+     * constructor
+     * @param id Vehicle ID
+     * @param type Vehicle Type object
+     * @param lastJunction Vehicle starting position
      */
     public Vehicle(int id, VehicleType type, Junction lastJunction) {
         this.id = id;
@@ -59,24 +59,66 @@ public class Vehicle {
         System.out.printf("%s, ID: %d has been created and placed at %s\n", type, id, lastJunction);
 
         Random randObj = new Random();
+        ArrayList<Junction> junctions = new ArrayList<Junction>();
+        ArrayList<Road> roads = new ArrayList<Road>();
 
-        currentRoute = new Route(new ArrayList<Junction>(), new ArrayList<Road>(), type);
-
-        int road_count = randObj.nextInt(6) + 5;
-        int roads_added = 0;
-        currentRoute.getJunctions().add(lastJunction);
+        Junction currentJunc = lastJunction;
+        
+        /** Plot a random route starting from lastJunction */
+        for (int roads_added = 0, road_count = (randObj.nextInt(6) + 5); roads_added < road_count; roads_added++) {
+            if (currentJunc.getExitingRoads().isEmpty())
+                break;
+            
+            Road road = currentJunc.getExitingRoads().get(randObj.nextInt(currentJunc.getExitingRoads().size()));
+            
+            if (junctions.size() == 1) {
+                lastJunction.getVehicles().add(road);
+                lastRoad = road;
+            }
+            roads.add(road);
+            currentJunc = road.getToJunc();
+            junctions.add(currentJunc);
+        }
+        /** Create the currentRoute object and feed it the plotted route */
+        currentRoute = new Route(junctions, roads, type);
     }
 
     public void move() {
+        if (spentTime == 0)
+            System.out.printf("%s is starting route from %s to %s.\n", this, currentRoute.getStart(), currentRoute.getEnd());
 
+        if (currentRoute.getRoads().indexOf(lastRoad) + 1 >= currentRoute.getRoads().size()) {
+            System.out.printf("%s has reached the end of its route\n", this);
+            return;
+        }
+        if (lastJunction.checkAvailability(lastRoad)) {
+            checkIn();
+            System.out.printf("%s has arrived to %s\n", this, lastJunction);
+        }
+        else {
+            System.out.printf("%s is waiting for green light at %s\n", this, lastJunction);
+            spentTime += lastJunction.getDelay();
+        }
     }
 
     public void status() {
-
+        if (currentRoute.getRoads().indexOf(lastRoad) >= currentRoute.getRoads().size()) {
+            System.out.printf("%s has completed its route, ", this);
+        }
+        else {
+            System.out.printf("%s is current placed at %s while on route from %s to %s, ",
+                              this, lastJunction, currentRoute.getStart(), currentRoute.getEnd());
+        }
+        System.out.printf("Time spent: %d\n", spentTime);
     }
 
     public void checkIn() {
-
+        double traveltime = lastRoad.getLength() / Math.min(lastRoad.getMaxSpeed(), type.getSpeed());
+        spentTime += traveltime;
+        System.out.printf("%s is moving on %s. Delay time: %f\n", this, lastRoad, traveltime);
+        lastJunction.getVehicles().remove(lastRoad); // What if there other vehicles other than this one?
+        lastRoad = currentRoute.getRoads().get(currentRoute.getRoads().indexOf(lastRoad) + 1);
+        lastJunction = lastRoad.getToJunc();
     }
 
     /**

@@ -12,8 +12,6 @@ import utilities.Point;
  * 
  */
 
-
-
 public class Junction {
 	
     /**

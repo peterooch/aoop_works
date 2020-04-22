@@ -95,9 +95,16 @@ public class Route {
 
     /**
      * getter for the junctions
-     * @return
+     * @return Route junction list
      */
     public ArrayList<Junction> getJunctions() {
         return junctions;
+    }
+    /**
+     * getter for the roads
+     * @return Route road list
+     */
+    public ArrayList<Road> getRoads() {
+        return roads;
     }
 }
