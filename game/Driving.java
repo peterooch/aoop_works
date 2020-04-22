@@ -97,8 +97,8 @@ public class Driving {
         return "Number of junctions: " + numOfJuncs + ", Number of vehicles: " + numOfVehicles;
     }
 
-    public boolean equals(Driving other) {
-        return currentMap == other.currentMap;
+    public boolean equals(Object other) {
+        return (other instanceof Driving) && currentMap == ((Driving)other).currentMap;
     }
 
     /**

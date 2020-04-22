@@ -1,18 +1,18 @@
-/**
- * 
- */
 package utilities;
 
 import game.Driving;
 
 /**
- * @author krsof
- *
+ * Program class and entrypoint
+ * 
+ * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
+ * @author Asaf Bereby, ID 208058412, Campus Be'er Sheva
  */
+
 public class Program {
 
-	/**
-	 * @param args
+	/** Main entrypoint
+	 * @param args command-line arguments
 	 */
 	public static void main(String[] args) {
 

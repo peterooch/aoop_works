@@ -48,8 +48,8 @@ public class Junction {
     /**
      * constructor
      *
-     * @param name to name the junction
-     * @param loc for location
+     * @param name Junction name
+     * @param loc Junction location
      */
     public Junction(String name, Point loc) {
         Random randObj = new Random();
@@ -98,7 +98,7 @@ public class Junction {
 
     /**
      * entering roads setter
-     * @param list of entring roads
+     * @param list new list of entring roads
      */
     public void setEnteringRoads(ArrayList<Road> list) {
         this.enteringRoads = list;
@@ -114,7 +114,7 @@ public class Junction {
 
     /**
      * setter of exiting roads
-     * @param list of exiting roads
+     * @param list new list of exiting roads
      */
     public void setExitingRoads(ArrayList<Road> list) {
         this.exitingRoads = list;
@@ -130,7 +130,7 @@ public class Junction {
 
     /**
      * setter of the vehicles list
-     * @param list of vehicles
+     * @param list new list of vehicles
      */
     public void setVehicles(ArrayList<Road> list) {
         this.vehicles = list;
@@ -154,7 +154,7 @@ public class Junction {
 
     /**
      * getter for hasLights
-     * @return  hasLights
+     * @return boolean value if the junction has a traffic lights
      */
     public boolean getHasLights() {
         return hasLights;
@@ -170,7 +170,7 @@ public class Junction {
 
     /**
      * getter for delay integer
-     * @return  delay
+     * @return junction delay
      */
     public int getDelay() {
         return delay;

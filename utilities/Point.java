@@ -6,6 +6,7 @@ import java.util.Random;
  * Point coordinate class
  * 
  * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
+ * @author Asaf Bereby, ID 208058412, Campus Be'er Sheva
  */
 
 public class Point {
@@ -138,7 +139,9 @@ public class Point {
         return String.format("(%f , %f)", x, y);
     }
 
-    public boolean equals(Point other) {
-        return other.x == x && other.y == y;
+    public boolean equals(Object other) {
+        if (other instanceof Point)
+            return ((Point)other).x == x && ((Point)other).y == y;
+        return false;
     }
 }
