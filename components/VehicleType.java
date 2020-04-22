@@ -7,6 +7,7 @@ import java.util.Random;
  * VehicleType class
  * 
  * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
+ * @author Asaf Bereby, ID 208058412, Campus Be'er Sheva
  */
 
 public class VehicleType {
@@ -26,6 +27,12 @@ public class VehicleType {
         vehiclesTypes.add(new VehicleType("bicycle", 30, false));
     }
 
+    /**
+     * constructor that gets three parameters:
+     * @param typeName
+     * @param speed
+     * @param add_to_list
+     */
     private VehicleType(String typeName, int speed, boolean add_to_list) {
         this.typeName = typeName;
         this.speed = speed;
@@ -34,6 +41,11 @@ public class VehicleType {
             vehiclesTypes.add(this);
     }
 
+    /**
+     * constructor that gets two parameters:
+     * @param typeName
+     * @param speed
+     */
     public VehicleType(String typeName, int speed) {
         this(typeName, speed, true);
     }
@@ -46,18 +58,34 @@ public class VehicleType {
         return typeName.equals(other.typeName) && speed == other.speed;
     }
 
+    /**
+     * getter for speed
+     * @return speed
+     */
     public int getSpeed() {
         return speed;
     }
 
+    /**
+     * getter for name
+     * @return typeName
+     */
     public String getName() {
         return typeName;
     }
 
+    /**
+     * function that returns Random vehicle type
+     * @return vehicle type
+     */
     public static VehicleType getRandomVehicleType() {
         return vehiclesTypes.get(new Random().nextInt(vehiclesTypes.size()));
     }
 
+    /**
+     * function that returns a list of random vehicle types
+     * @return list vehicle types
+     */
     public static ArrayList<VehicleType> getRandomVehicleTypes() {
         Random randObj = new Random();
         int rand_size = (!vehiclesTypes.isEmpty()) ? randObj.nextInt(vehiclesTypes.size()) + 1 : 0;
