@@ -86,10 +86,20 @@ public class Driving {
     }
 
     /**
-     * function that starts the driving with maximum time as parameter
+     * function that starts the driving (simulates) with maximum time as parameter
      * @param maxTime
      */
     public void startDrive(int maxTime) {
+    	for (int i = 0 ; i < maxTime ; i++){
+            System.out.println("\nTurn: " + i);
+            for (int j = 0; j < currentVehicles.size() ; j++){
+                currentVehicles.get(j).move();
+            }
+        }
+        System.out.println("\nStatus");
+        for (int i = 0 ; i <currentVehicles.size() ; i++){
+            currentVehicles.get(i).status();
+        }
 
     }
 
