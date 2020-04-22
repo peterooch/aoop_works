@@ -19,7 +19,7 @@ public class Road {
     private int maxSpeed;
 
     /**
-     * 
+     * Road constructor
      * @param from    The road entrance junction
      * @param to      The road exit junction
      * @param allowed what kind of vehicles are permitted
@@ -31,6 +31,7 @@ public class Road {
     }
 
     /**
+     * Road constructor
      * See the {@link #Road(Junction, Junction, ArrayList, boolean, boolean)}
      * Constructor for more info
      */
@@ -41,7 +42,7 @@ public class Road {
 
     /**
      * Internal Init function to be called from the public constructors, See the
-     * {@link #Road(Junction, Junction, ArrayList, boolean, boolean)} Constructor
+     * {@link #Road(Junction, Junction, ArrayList, boolean, boolean)} constructor
      * for more info
      */
     private void InitRoad(Junction from, Junction to, ArrayList<VehicleType> allowed, boolean open, boolean enabled) {
