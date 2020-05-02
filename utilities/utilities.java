@@ -2,7 +2,7 @@ package utilities;
 import java.util.Random;
 
 
-public interface utilities {
+public interface Utilities {
 
     default public boolean checkValue(double Val, double min, double max){
 
@@ -17,7 +17,7 @@ public interface utilities {
     }
 
     default public void errorMessage(double wrongVal, String varName){
-        System.out.print("The value " + wrongVal + "for" + varName + "is not suitable")
+        System.out.print("The value " + wrongVal + "for" + varName + "is not suitable");
     }
 
     default public boolean getRandomBoolean(){
@@ -40,9 +40,4 @@ public interface utilities {
     default public void successMessage(String objName){
         System.out.print(objName + "has been created.");
     }
-
-
-
-
-
 }

@@ -52,7 +52,8 @@ public abstract class Point implements Utilities {
     }
 
     public Point() {
-        this(getRandomDouble(minVal, maxX), getRandomDouble(minVal, maxY));
+        /** Can't call getRandomDouble while in this phase */
+        this(-1, -1);
     }
     /**
      * X position getter
