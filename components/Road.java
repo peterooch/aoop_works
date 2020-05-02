@@ -200,6 +200,7 @@ public class Road {
     /**
      * function that returns the value
      */
+    @Override
     public String toString() {
         return String.format("Road %s -> %s", fromJunc.getJunctionName(), toJunc.getJunctionName());
     }
@@ -207,6 +208,7 @@ public class Road {
     /**
      * function that checks if two values are equal
      */
+    @Override
     public boolean equals(Object other) {
         if (other instanceof Road) {
             Road otherRoad = (Road)other;

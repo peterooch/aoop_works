@@ -213,6 +213,7 @@ public class Junction {
     /**
      * function that returns the junction name but as a String value
      */
+    @Override
     public String toString() {
         return "Junction " + junctionName;
     }
@@ -220,6 +221,7 @@ public class Junction {
     /**
      * function that says if two values are equals
      */
+    @Override
     public boolean equals(Object other) {
         if (other instanceof Junction) {
             Junction other_junc = (Junction)other;

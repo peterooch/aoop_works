@@ -116,7 +116,7 @@ public class Vehicle {
     }
     /** Moves the vehicle to next road in its route and ajust the junction data */
     public void checkIn() {
-        double traveltime = lastRoad.getLength() / Math.min(lastRoad.getMaxSpeed(), type.getSpeed());
+        double traveltime = lastRoad.getLength() / Math.min(lastRoad.getMaxSpeed(), type.getAverageSpeed());
         spentTime += traveltime;
         System.out.printf("%s is moving on %s. Delay time: %f\n", this, lastRoad, traveltime);
         lastJunction.getVehicles().remove(lastRoad); // What if there other vehicles other than this one?
@@ -252,10 +252,12 @@ public class Vehicle {
         return spentTime;
     }
 
+    @Override
     public boolean equals(Object other) {
         return (other instanceof Vehicle) && (id == ((Vehicle)other).id);
     }
 
+    @Override
     public String toString() {
         return String.format("ID: %d, %s", id, type.toString());
     }

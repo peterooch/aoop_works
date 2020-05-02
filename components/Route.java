@@ -88,7 +88,7 @@ public class Route {
         }
 
         for (Road road : roads)
-            delay += road.getLength() / Math.min(road.getMaxSpeed(), vehicleType.getSpeed());
+            delay += road.getLength() / Math.min(road.getMaxSpeed(), vehicleType.getAverageSpeed());
 
         return delay;
     }

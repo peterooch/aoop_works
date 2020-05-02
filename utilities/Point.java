@@ -9,19 +9,19 @@ import java.util.Random;
  * @author Asaf Bereby, ID 208058412, Campus Be'er Sheva
  */
 
-public class Point {
+public abstract class Point implements Utilities {
     /**
      * Minimal X/Y value
      */
-    public static final double MINIMUM = 0F;
+    public static final double minVal = 0;
     /**
      * Maximal X value
      */
-    public static final double MAXIMUM_X = 1000000F;
+    public static final double maxX = 1000000;
     /**
      * Maximal Y value
      */
-    public static final double MAXIMUM_Y = 800F;
+    public static final double maxY = 800;
 
     /**
      * Point's x position
@@ -39,20 +39,21 @@ public class Point {
      * @param y Position in the y axis, between 0 to 800
      */
     public Point(double x, double y) {
-        Random randObj = new Random();
-
         if (!intSetX(x, true)) {
-            this.x = randObj.nextDouble() * MAXIMUM_X;
+            this.x = getRandomDouble(minVal, maxX);
             System.out.printf(", therefore it was replaced by %f\n", this.x);
         }
         if (!intSetY(y, true)) {
-            this.y = randObj.nextDouble() * MAXIMUM_Y;
+            this.y = getRandomDouble(minVal, maxY);
             System.out.printf(", therefore it was replaced by %f\n", this.y);
         }
 
         System.out.printf("Point object %s has been created\n", toString());
     }
 
+    public Point() {
+        this(getRandomDouble(minVal, maxX), getRandomDouble(minVal, maxY));
+    }
     /**
      * X position getter
      * 
@@ -70,7 +71,7 @@ public class Point {
      * @return true if x is in the valid range, false otherwise
      */
     private boolean intSetX(double x, boolean constructor) {
-        if (x < MINIMUM || x > MAXIMUM_X) {
+        if (checkValue(x, minVal, maxX)) {
             System.out.printf("%f is not valid X value", x);
 
             if (!constructor)
@@ -111,7 +112,7 @@ public class Point {
      * @return true if y is in the valid range, false otherwise
      */
     public boolean intSetY(double y, boolean constructor) {
-        if (y < MINIMUM || y > MAXIMUM_Y) {
+        if (checkValue(y, minVal, maxY)) {
             System.out.printf("%f is not valid Y value", y);
 
             if (!constructor)
@@ -135,13 +136,21 @@ public class Point {
         return intSetY(y, false);
     }
 
+    @Override
     public String toString() {
         return String.format("(%f , %f)", x, y);
     }
 
+    @Override
     public boolean equals(Object other) {
         if (other instanceof Point)
             return ((Point)other).x == x && ((Point)other).y == y;
         return false;
+    }
+    public double calcDistace(Point other) {
+        double dx = x - other.x;
+        double dy = y - other.y;
+
+        return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
     }
 }

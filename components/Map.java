@@ -78,7 +78,7 @@ public class Map {
 
         for (int i = 0; i < count; i++) {
             junctions.add(new Junction(String.format("No%d", i + 1),
-                    new Point(randObj.nextDouble() * Point.MAXIMUM_X, randObj.nextDouble() * Point.MAXIMUM_Y)));
+                    new Point()));
         }
     }
 

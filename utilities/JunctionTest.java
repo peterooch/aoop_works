@@ -18,7 +18,7 @@ public static void testJunction() {
 		
 		Junction arr[]=new Junction[10];
 		for (int i=0;i<10;i++) {
-			arr[i]=new Junction(new String("" +i),new Point(-1,-1));
+			arr[i]=new Junction(new String("" +i),new Point());
 			
 		}
 		

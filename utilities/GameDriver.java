@@ -9,14 +9,14 @@ import game.Driving;
  * @author Asaf Bereby, ID 208058412, Campus Be'er Sheva
  */
 
-public class Program {
+public class GameDriver {
 
 	/** Main entrypoint
 	 * @param args command-line arguments
 	 */
 	public static void main(String[] args) {
-		Driving driving = new Driving(10, 40, 8);
-		driving.startDrive(8);
+		Driving driving = new Driving(10, 20);
+		driving.startDrive(20);
 	}
 
 }

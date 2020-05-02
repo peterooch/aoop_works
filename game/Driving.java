@@ -46,10 +46,9 @@ public class Driving {
      * @param numOfVehicles
      * @param maxTime
      */
-    public Driving(int numOfJuncs, int numOfVehicles, int maxTime) {
+    public Driving(int numOfJuncs, int numOfVehicles) {
         this.numOfJuncs = numOfJuncs;
         this.numOfVehicles = numOfVehicles;
-        this.maxTime = maxTime;
 
         currentMap = new Map(numOfJuncs);
         currentVehicles = new ArrayList<Vehicle>(numOfVehicles);
@@ -103,10 +102,12 @@ public class Driving {
 
     }
 
+    @Override
     public String toString() {
         return "Number of junctions: " + numOfJuncs + ", Number of vehicles: " + numOfVehicles;
     }
 
+    @Override
     public boolean equals(Object other) {
         return (other instanceof Driving) && currentMap == ((Driving)other).currentMap;
     }
