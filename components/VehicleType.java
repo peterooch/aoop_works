@@ -4,91 +4,63 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * VehicleType class
+ * VehicleType enumeration
  * 
  * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
  * @author Asaf Bereby, ID 208058412, Campus Be'er Sheva
  */
 
-public class VehicleType {
-    private String typeName;
-    private int speed;
-
-    private static ArrayList<VehicleType> vehiclesTypes;
-
-    static {
-        /** Copypasta from example */
-        vehiclesTypes = new ArrayList<VehicleType>();
-        vehiclesTypes.add(new VehicleType("bus", 60, false));
-        vehiclesTypes.add(new VehicleType("motorcycle", 120, false));
-        vehiclesTypes.add(new VehicleType("truck", 80, false));
-        vehiclesTypes.add(new VehicleType("semi-trailer", 80, false));
-        vehiclesTypes.add(new VehicleType("car", 90, false));
-        vehiclesTypes.add(new VehicleType("bicycle", 30, false));
-    }
+public enum VehicleType {
+    car(90),
+    bus(60),
+    bicycle(40),
+    motorcycle(120),
+    truck(80),
+    tram(50),
+    semitrailer(85);
+    
+    private int averageSpeed;
 
     /**
-     * constructor that gets three parameters:
-     * @param typeName
-     * @param speed
-     * @param add_to_list
+     * Enumeration constructor
+     * @param speed Vehicle average speed
      */
-    private VehicleType(String typeName, int speed, boolean add_to_list) {
-        this.typeName = typeName;
-        this.speed = speed;
-
-        if (add_to_list && !vehiclesTypes.contains(this))
-            vehiclesTypes.add(this);
+    VehicleType(int speed) {;
+        averageSpeed = speed;
     }
-
+    
     /**
-     * constructor that gets two parameters:
-     * @param typeName
-     * @param speed
+     * toString method
+     * @return String representation
      */
-    public VehicleType(String typeName, int speed) {
-        this(typeName, speed, true);
-    }
-
+    @Override
     public String toString() {
-        return "Type: " + typeName + ", Speed: " + speed;
-    }
-
-    public boolean equals(VehicleType other) {
-        return typeName.equals(other.typeName) && speed == other.speed;
+        return "Type: " + super.toString() + ", Average speed: " + averageSpeed;
     }
 
     /**
      * getter for speed
-     * @return speed
+     * @return Average speed
      */
-    public int getSpeed() {
-        return speed;
+    public int getAverageSpeed() {
+        return averageSpeed;
     }
 
     /**
-     * getter for name
-     * @return typeName
-     */
-    public String getName() {
-        return typeName;
-    }
-
-    /**
-     * function that returns Random vehicle type
-     * @return vehicle type
+     * Function that fetches a random vehicle type value
+     * @return a specific vehicle type
      */
     public static VehicleType getRandomVehicleType() {
-        return vehiclesTypes.get(new Random().nextInt(vehiclesTypes.size()));
+        return values()[new Random().nextInt(values().length)];
     }
 
     /**
-     * function that returns a list of random vehicle types
-     * @return list vehicle types
+     * Function that fetches a list of random vehicle types
+     * @return list of vehicle types
      */
     public static ArrayList<VehicleType> getRandomVehicleTypes() {
         Random randObj = new Random();
-        int rand_size = (!vehiclesTypes.isEmpty()) ? randObj.nextInt(vehiclesTypes.size()) + 1 : 0;
+        int rand_size = randObj.nextInt(values().length) + 1;
         ArrayList<VehicleType> result = new ArrayList<VehicleType>(rand_size);
 
         for (int i = 0; i < rand_size; i++) {
