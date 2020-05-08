@@ -14,114 +14,57 @@ public class Vehicle {
     /**
      * int value for id parameter
      */
-    private int id;
+    private int id;                                                     /// need intialization. dont undestand from the HW orders.
     /**
      * parameter for vehicle type
      */
     private VehicleType type;
     /**
-     * int value for speed
-     */
-    private int speed;
-    /**
      * Route parameter for current route
      */
     private Route currentRoute;
-    /**
-     * Junction parameter for last Junction
-     */
-    private Junction lastJunction;
     /**
      * Road parameter for last Road
      */
     private Road lastRoad;
     /**
-     * boolean value that says if a vehicle is moving
+     * road/junction parameter for current RoutPart
      */
-    private boolean movesNow;
+    private RoutParts currentRoutePart;
     /**
-     * double value for time spent
+     * parameter for time passed since beggining
      */
-    private double spentTime;
+    private int timeFromRouteStart;
+    /**
+     * parameter for time passed since last checkin
+     */
+    private int timeOnCurrentPart;
+    /**
+     * parameter that counts the objects
+     */
+    private int objectsCount;
+    /**
+     * String parameter for status(delay in junc etc..)
+     */
+    private String status; 
+
+
 
     /** 
      * constructor
-     * @param id Vehicle ID
-     * @param type Vehicle Type object
-     * @param lastJunction Vehicle starting position
+     * @param road Vehicle ID
      */
-    public Vehicle(int id, VehicleType type, Junction lastJunction) {
-        this.id = id;
-        this.type = type;
-        this.lastJunction = lastJunction;
-        movesNow = false;
-        spentTime = 0;
-        System.out.printf("%s, ID: %d has been created and placed at %s\n", type, id, lastJunction);
-
-        Random randObj = new Random();
-        ArrayList<Junction> junctions = new ArrayList<Junction>();
-        ArrayList<Road> roads = new ArrayList<Road>();
-
-        Junction currentJunc = lastJunction;
+    public Vehicle(Road road) {
         
-        /** Plot a random route starting from lastJunction */
-        for (int roads_added = 0, road_count = (randObj.nextInt(10) + 10); roads_added < road_count; roads_added++) {
-            if (currentJunc.getExitingRoads().isEmpty())
-                break;
-            
-            Road road = currentJunc.getExitingRoads().get(randObj.nextInt(currentJunc.getExitingRoads().size()));
-            
-            if (junctions.size() == 1) {
-                lastJunction.getVehicles().add(road);
-                lastRoad = road;
-            }
-            roads.add(road);
-            currentJunc = road.getToJunc();
-            junctions.add(currentJunc);
-        }
-        /** Create the currentRoute object and feed it the plotted route */
-        currentRoute = new Route(junctions, roads, type);
+        
+       
     }
 
     /**
      * Attempts to advance the vehicle in its route
      */
     public void move() {
-        if (spentTime == 0)
-            System.out.printf("%s is starting route from %s to %s.\n", this, currentRoute.getStart(), currentRoute.getEnd());
-
-        if (currentRoute.getRoads().indexOf(lastRoad) + 1 >= currentRoute.getRoads().size()) {
-            System.out.printf("%s has reached the end of its route\n", this);
-            return;
-        }
-        if (lastJunction.checkAvailability(lastRoad)) {
-            checkIn();
-            System.out.printf("%s has arrived to %s\n", this, lastJunction);
-        }
-        else {
-            System.out.printf("%s is waiting for green light at %s\n", this, lastJunction);
-            spentTime += lastJunction.getDelay();
-        }
-    }
-    /** Prints the vehicles current route status */
-    public void status() {
-        if (currentRoute.getRoads().indexOf(lastRoad) + 1 >= currentRoute.getRoads().size()) {
-            System.out.printf("%s has completed its route, ", this);
-        }
-        else {
-            System.out.printf("%s is currently placed at %s while on route from %s to %s, ",
-                              this, lastJunction, currentRoute.getStart(), currentRoute.getEnd());
-        }
-        System.out.printf("Time spent: %f\n", spentTime);
-    }
-    /** Moves the vehicle to next road in its route and ajust the junction data */
-    public void checkIn() {
-        double traveltime = lastRoad.getLength() / Math.min(lastRoad.getMaxSpeed(), type.getAverageSpeed());
-        spentTime += traveltime;
-        System.out.printf("%s is moving on %s. Delay time: %f\n", this, lastRoad, traveltime);
-        lastJunction.getVehicles().remove(lastRoad); // What if there other vehicles other than this one?
-        lastRoad = currentRoute.getRoads().get(currentRoute.getRoads().indexOf(lastRoad) + 1);
-        lastJunction = lastRoad.getToJunc();
+        
     }
 
     /**
@@ -157,22 +100,6 @@ public class Vehicle {
     }
 
     /**
-     * speed setter
-     * @param speed
-     */
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-    /**
-     * speed getter
-     * @return speed
-     */
-    public int getSpeed() {
-        return speed;
-    }
-
-    /**
      * current route setter
      * @param currentRoute
      */
@@ -186,22 +113,6 @@ public class Vehicle {
      */
     public Route getCurrentRoute() {
         return currentRoute;
-    }
-
-    /**
-     * last junction setter
-     * @param lastJunction
-     */
-    public void setLastJunction(Junction lastJunction) {
-        this.lastJunction = lastJunction;
-    }
-
-    /**
-     * last junction getter
-     * @return
-     */
-    public Junction getLastJunction() {
-        return lastJunction;
     }
 
     /**
@@ -224,34 +135,7 @@ public class Vehicle {
      * movesNow setter
      * @param movesNow
      */
-    public void setMovesNow(boolean movesNow) {
-        this.movesNow = movesNow;
-    }
-
-    /**
-     * movesNow getter
-     * @return movesNow
-     */
-    public boolean getMovesNow() {
-        return movesNow;
-    }
-
-    /**
-     * spentTime setter
-     * @param spentTime
-     */
-    public void setSpentTime(double spentTime) {
-        this.spentTime = spentTime;
-    }
-
-    /**
-     * spentTime getter
-     * @return spentTime
-     */
-    public double getSpentTime() {
-        return spentTime;
-    }
-
+    
     @Override
     public boolean equals(Object other) {
         return (other instanceof Vehicle) && (id == ((Vehicle)other).id);
@@ -260,6 +144,38 @@ public class Vehicle {
     @Override
     public String toString() {
         return String.format("ID: %d, %s", id, type.toString());
+    }
+
+    public int getTimeFromRouteStart() {
+        return timeFromRouteStart;
+    }
+
+    public void setTimeFromRouteStart(int timeFromRouteStart) {
+        this.timeFromRouteStart = timeFromRouteStart;
+    }
+
+    public int getTimeOnCurrentPart() {
+        return timeOnCurrentPart;
+    }
+
+    public void setTimeOnCurrentPart(int timeOnCurrentPart) {
+        this.timeOnCurrentPart = timeOnCurrentPart;
+    }
+
+    public int getObjectsCount() {
+        return objectsCount;
+    }
+
+    public void setObjectsCount(int objectsCount) {
+        this.objectsCount = objectsCount;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 }
