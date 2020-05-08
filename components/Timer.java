@@ -1,4 +1,4 @@
-package utilities;
+package components;
 
 public interface Timer {
     public void incrementDrivingTime();
