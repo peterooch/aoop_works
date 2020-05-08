@@ -1,7 +1,6 @@
 package components;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Road class
@@ -10,80 +9,48 @@ import java.util.Random;
  * @author Asaf Bereby, ID 208058412, Campus Be'er Sheva
  */
 
-public class Road {
-    private Junction fromJunc;
-    private Junction toJunc;
-    private ArrayList<VehicleType> allowedVehicles;
-    private boolean isOpen;
-    private boolean isEnabled;
+public class Road implements RouteParts {
+    private static final int[] allowedSpeedOptions = {30,40,50,55,60,70,80,90};
+    private Junction startJunction;
+    private Junction endJunction;
+    private boolean greenLight;
     private double length;
     private int maxSpeed;
+    private VehicleType[] vehicleTypes;
+    private ArrayList<Vehicle> waitingVehicles;
 
     /**
      * Road constructor
-     * @param from    The road entrance junction
-     * @param to      The road exit junction
-     * @param allowed what kind of vehicles are permitted
-     * @param open    is the road open to traffic
-     * @param enabled is the road enabled (?)
      */
-    public Road(Junction from, Junction to, ArrayList<VehicleType> allowed, boolean open, boolean enabled) {
-        InitRoad(from, to, allowed, open, enabled);
-    }
-
-    /**
-     * Road constructor
-     * See the {@link #Road(Junction, Junction, ArrayList, boolean, boolean)}
-     * Constructor for more info
-     */
-    public Road(Junction from, Junction to) {
-        Random randObj = new Random();
-        InitRoad(from, to, VehicleType.getRandomVehicleTypes(), randObj.nextBoolean(), randObj.nextBoolean());
-    }
-
-    /**
-     * Internal Init function to be called from the public constructors, See the
-     * {@link #Road(Junction, Junction, ArrayList, boolean, boolean)} constructor
-     * for more info
-     */
-    private void InitRoad(Junction from, Junction to, ArrayList<VehicleType> allowed, boolean open, boolean enabled) {
-        fromJunc = from;
-        toJunc = to;
-        isOpen = open;
-        isEnabled = enabled;
-        allowedVehicles = allowed;
+    public Road(Junction start, Junction end) {
+        startJunction = start;
+        endJunction = end;
+        waitingVehicles = new ArrayList<Vehicle>();
 
         length = countLength();
 
-        if (!fromJunc.getExitingRoads().contains(this))
-            fromJunc.getExitingRoads().add(this);
-
-        if (!toJunc.getEnteringRoads().contains(this))
-            toJunc.getEnteringRoads().add(this);
+        startJunction.addExitingRoad(this);
+        endJunction.addEnteringRoad(this);
 
         /** Pick random speed limit */
-        maxSpeed = new Random().nextInt(12) * 5 + 55;
+        maxSpeed = allowedSpeedOptions[getRandomInt(0, allowedSpeedOptions.length)];
 
         System.out.printf("%s object has been created\n", toString());
     }
-
     /**
      * function that counts the length of the road
      * @return double value
      */
     public double countLength() {
-        double dx = fromJunc.getLocation().getX() - toJunc.getLocation().getX();
-        double dy = fromJunc.getLocation().getY() - toJunc.getLocation().getY();
-
-        return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+        return startJunction.calcDistace(endJunction);
     }
 
     /**
      * setter for the entrance junction
      * @param junction
      */
-    public void setFromJunc(Junction junction) {
-        fromJunc = junction;
+    public void setStartJunction(Junction junction) {
+        startJunction = junction;
         length = countLength();
     }
 
@@ -91,8 +58,8 @@ public class Road {
      * setter for The road exit junction
      * @param junction
      */
-    public void setToJunc(Junction junction) {
-        toJunc = junction;
+    public void setEndJunction(Junction junction) {
+        endJunction = junction;
         length = countLength();
     }
 
@@ -100,64 +67,32 @@ public class Road {
      * getter for The road entrance junction
      * @return fromJunc
      */
-    public Junction getFromJunc() {
-        return fromJunc;
+    public Junction getStartJunction() {
+        return startJunction;
     }
 
     /**
      * getter for the road exit junction
      * @return toJunc
      */
-    public Junction getToJunc() {
-        return toJunc;
+    public Junction getEndJunction() {
+        return endJunction;
     }
 
     /**
      * setter for the kind of vehicles that are permitted
      * @param allowedVehicles
      */
-    public void setAllowedVehicles(ArrayList<VehicleType> list) {
-        allowedVehicles = list;
+    public void setVehicleTypes(VehicleType[] list) {
+        vehicleTypes = list;
     }
 
     /**
      * getter for the allowed vehicles
      * @return
      */
-    public ArrayList<VehicleType> getAllowedVehicle() {
-        return allowedVehicles;
-    }
-
-    /**
-     * setter for the isOpen parameter
-     * @param open
-     */
-    public void setIsOpen(boolean open) {
-        isOpen = open;
-    }
-
-    /**
-     * getter for the isOpen parameter
-     * @return isOpen
-     */
-    public boolean getIsOpen() {
-        return isOpen;
-    }
-
-    /**
-     * setter for the isEnabled parameter
-     * @param enabled
-     */
-    public void setIsEnabled(boolean enabled) {
-        isEnabled = enabled;
-    }
-
-    /**
-     * getter for the isEnabled parameter
-     * @return
-     */
-    public boolean getIsEnabled() {
-        return isEnabled;
+    public VehicleType[] getVehicleTypes() {
+        return vehicleTypes;
     }
 
     /**
@@ -165,7 +100,10 @@ public class Road {
      * @param speed
      */
     public void setMaxSpeed(int speed) {
-        maxSpeed = speed;
+        for (int s : allowedSpeedOptions) {
+            if (s == speed)
+                maxSpeed = speed;
+        }
     }
 
     /**
@@ -185,24 +123,11 @@ public class Road {
     }
 
     /**
-     * function that adds vehicle type
-     * @param type
-     * @return a boolean value that says if the type was added
-     */
-    public boolean addVehicleType(VehicleType type) {
-        if (type == null || allowedVehicles.contains(type))
-            return false;
-
-        allowedVehicles.add(type);
-        return true;
-    }
-
-    /**
      * function that returns the value
      */
     @Override
     public String toString() {
-        return String.format("Road %s -> %s", fromJunc.getJunctionName(), toJunc.getJunctionName());
+        return String.format("Road %s -> %s", startJunction.getJunctionName(), endJunction.getJunctionName());
     }
 
     /**
@@ -212,8 +137,44 @@ public class Road {
     public boolean equals(Object other) {
         if (other instanceof Road) {
             Road otherRoad = (Road)other;
-            return fromJunc.equals(otherRoad.fromJunc) && toJunc.equals(otherRoad.toJunc);
+            return startJunction.equals(otherRoad.startJunction) && endJunction.equals(otherRoad.endJunction);
         }
         return false;
+    }
+
+    @Override
+    public double calcEstimatedTime(Object object) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public boolean canLeave(Vehicle vehicle) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void checkIn(Vehicle vehicle) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void checkOut(Vehicle vehicle) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public RouteParts findNextPart(Vehicle vehicle) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void stayOnCurrentPart(Vehicle vehicle) {
+        // TODO Auto-generated method stub
+
     }
 }

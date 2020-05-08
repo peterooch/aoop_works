@@ -9,102 +9,49 @@ import java.util.ArrayList;
  * @author Asaf Bereby, ID 208058412, Campus Be'er Sheva
  */
 
-public class Route {
-    /**
-     * list of junctions
-     */
-    private ArrayList<Junction> junctions;
-    /**
-     * list of roads
-     */
-    private ArrayList<Road> roads;
-    /**
-     * double time delay parameter
-     */
-    private double delay;
-    /**
-     * vehicle type parameter
-     */
-    private VehicleType vehicleType;
+public class Route implements RouteParts {
+    private Vehicle vehicle;
+    private ArrayList<RouteParts> routeParts;
 
-    /**
-     * constructor that gets three parameters:
-     * @param junctions
-     * @param roads
-     * @param vehicleType
-     */
-    public Route(ArrayList<Junction> junctions, ArrayList<Road> roads, VehicleType vehicleType) {
-        this.junctions = junctions;
-        this.roads = roads;
-        this.vehicleType = vehicleType;
-        calcDelay();
+    public Route(RouteParts start, Vehicle vehicle) {
+        this.vehicle = vehicle;
+        // TODO build route
+        routeParts = new ArrayList<RouteParts>(10);
     }
 
-    /**
-     * constructor that gets three parameters:
-     * @param start
-     * @param end
-     * @param vehicleType
-     */
-    public Route(Junction start, Junction end, VehicleType vehicleType) {
-        /** To be implemented */
-        this.vehicleType = vehicleType;
+    @Override
+    public double calcEstimatedTime(Object object) {
+        // TODO Auto-generated method stub
+        return 0;
     }
 
-    /**
-     * getter for starting junction
-     * @return junction
-     */
-    public Junction getStart() {
-        return junctions.get(0);
+    @Override
+    public boolean canLeave(Vehicle vehicle) {
+        // TODO Auto-generated method stub
+        return false;
     }
 
-    /**
-     * getter for the ending junction
-     * @return junction
-     */
-    public Junction getEnd() {
-        return junctions.get(junctions.size() - 1);
+    @Override
+    public void checkIn(Vehicle vehicle) {
+        // TODO Auto-generated method stub
+
     }
 
-    /**
-     * function that calculates the delay
-     * @return delay
-     */
-    public double calcDelay() {
-        delay = 0.0;
+    @Override
+    public void checkOut(Vehicle vehicle) {
+        // TODO Auto-generated method stub
 
-        for (Junction junction : junctions) {
-            if (junction.getHasLights()) {
-                delay += junction.getDelay() * (junction.getEnteringRoads().size() - 1);
-            } else {
-                for (Road road : roads) {
-                    if (road.getToJunc().equals(junction)) {
-                        delay += junction.getEnteringRoads().indexOf(road);
-                        break;
-                    }
-                }
-            }
-        }
-
-        for (Road road : roads)
-            delay += road.getLength() / Math.min(road.getMaxSpeed(), vehicleType.getAverageSpeed());
-
-        return delay;
     }
 
-    /**
-     * getter for the junctions
-     * @return Route junction list
-     */
-    public ArrayList<Junction> getJunctions() {
-        return junctions;
+    @Override
+    public RouteParts findNextPart(Vehicle vehicle) {
+        // TODO Auto-generated method stub
+        return null;
     }
-    /**
-     * getter for the roads
-     * @return Route road list
-     */
-    public ArrayList<Road> getRoads() {
-        return roads;
+
+    @Override
+    public void stayOnCurrentPart(Vehicle vehicle) {
+        // TODO Auto-generated method stub
+
     }
 }
