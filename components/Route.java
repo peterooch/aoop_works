@@ -37,6 +37,7 @@ public class Route implements RouteParts {
             } else {
                 break;
             }
+
             routeParts.add(curr);
             added++;
         }

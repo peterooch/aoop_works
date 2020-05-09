@@ -72,7 +72,8 @@ public class Vehicle implements Utilities, Timer {
     public void move() {
         if(this.currentRoutePart.canLeave(this)){
             this.currentRoutePart.checkOut(this);
-            this.currentRoutePart = currentRoutePart.findNextPart(this);
+            this.currentRoutePart = currentRoute.findNextPart(this);
+            this.timeOnCurrentPart = 0;
             this.currentRoutePart.checkIn(this);
         }
         else {

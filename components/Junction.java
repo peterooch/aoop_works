@@ -158,13 +158,14 @@ public class Junction extends Point implements RouteParts {
 
     @Override
     public void checkIn(Vehicle vehicle) {
-        // TODO Auto-generated method stub
+        System.out.println(vehicle);
+        System.out.println("- is entering " + this + ", estimated wait time: " + calcEstimatedTime(vehicle));
     }
 
     @Override
     public void checkOut(Vehicle vehicle) {
-        // TODO Auto-generated method stub
-
+        System.out.println(vehicle);
+        System.out.println("- is exiting " + this + ".");
     }
 
     @Override

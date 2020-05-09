@@ -1,5 +1,10 @@
 package components;
-
+/**
+ * Lighted Junction class
+ * 
+ * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
+ * @author Asaf Bereby, ID 208058412, Campus Be'er Sheva
+ */
 public class LightedJunction extends Junction {
     private TrafficLights lights;
 

@@ -26,7 +26,7 @@ public class Road implements RouteParts {
         startJunction = start;
         endJunction = end;
         waitingVehicles = new ArrayList<Vehicle>();
-
+        greenLight = false;
         length = countLength();
 
         startJunction.addExitingRoad(this);

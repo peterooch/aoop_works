@@ -32,13 +32,18 @@ public abstract class TrafficLights implements Timer, Utilities {
     public abstract void changeIndex();
 
     public void changeLights(int nextRoadIndex){
-        Road tmp = roads.get(0);
-        roads.set(0, roads.get(nextRoadIndex));
-        roads.set(nextRoadIndex, tmp);
+        if (nextRoadIndex >= roads.size())
+            greenLightIndex = 0;
+        else
+            greenLightIndex = nextRoadIndex;
+
+        for (int i = 0; i < roads.size(); i++) {
+            roads.get(i).setGreenLight((i == greenLightIndex) ? true : false);
+        }
 
         System.out.print((this instanceof RandomTrafficLights) ? "Random " : "Sequential ");
         System.out.println("traffic lights " + id + " turned " + ((trafficLightsOn) ? "ON" : "OFF") + ", delay time: " + delay);
-        System.out.println("- " + roads.get(0));
+        System.out.println("- " + roads.get(greenLightIndex));
 
     }
     @Override
