@@ -160,12 +160,12 @@ public class Junction extends Point implements RouteParts {
     public void checkIn(Vehicle vehicle) {
         System.out.println(vehicle);
         System.out.println("- is entering " + this + ", estimated wait time: " + calcEstimatedTime(vehicle));
+        vehicle.getLastRoad().getWaitingVehicles().add(vehicle);
     }
 
     @Override
     public void checkOut(Vehicle vehicle) {
-        System.out.println(vehicle);
-        System.out.println("- is exiting " + this + ".");
+        vehicle.getLastRoad().getWaitingVehicles().remove(vehicle);
     }
 
     @Override
