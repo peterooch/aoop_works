@@ -59,8 +59,7 @@ public enum VehicleType {
      * @return list of vehicle types
      */
     public static ArrayList<VehicleType> getRandomVehicleTypes() {
-        Random randObj = new Random();
-        int rand_size = randObj.nextInt(values().length) + 1;
+        int rand_size = new Random().nextInt(values().length) + 1;
         ArrayList<VehicleType> result = new ArrayList<VehicleType>(rand_size);
 
         for (int i = 0; i < rand_size; i++) {
