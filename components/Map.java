@@ -1,9 +1,7 @@
 package components;
 
 import java.util.ArrayList;
-import java.util.Random;
-
-import utilities.Point;
+import utilities.Utilities;
 
 /**
  * Map class
@@ -12,7 +10,7 @@ import utilities.Point;
  * @author Asaf Bereby, ID 208058412, Campus Be'er Sheva
  */
 
-public class Map {
+public class Map implements Utilities {
     /**
      * map junctions
      */
@@ -51,7 +49,12 @@ public class Map {
         junctions = new ArrayList<Junction>(count);
 
         for (int i = 0; i < count; i++) {
-            junctions.add(new Junction());
+            Junction newJunc = getRandomBoolean() ? new Junction() : new LightedJunction();
+
+            if (newJunc instanceof LightedJunction)
+                lights.add(((LightedJunction)newJunc).getLights());
+
+            junctions.add(newJunc);
         }
     }
 
@@ -71,12 +74,7 @@ public class Map {
                 Junction from = junctions.get(j);
 
                 Road road = new Road(from, to);
-                
-                /*
-                if (to.getHasLights() && to.getEnteringRoads().size() == 1) {
-                    to.setLightsOn();
-                }
-                */
+
                 roads.add(road);
             }
         }
@@ -96,5 +94,20 @@ public class Map {
      */
     public ArrayList<Road> getRoads() {
         return roads;
+    }
+
+	public ArrayList<TrafficLights> getTrafficLights() {
+		return lights;
+    }
+    
+    public void SetAllRoads() {
+        // Method that does something for constructor... it doesn't make any sense
+        generateSeqRoads();
+    }
+
+    public void turnLightsOn() {
+        // Method that does something for constructor... it doesn't make any sense
+        for (TrafficLights light : lights)
+            light.setTrafficLightsOn(true);
     }
 }

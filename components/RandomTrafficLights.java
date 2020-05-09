@@ -1,9 +1,7 @@
-package utilities;
+package components;
 
 import java.util.ArrayList;
 import java.util.Random;
-
-import components.Road;
 
 public class RandomTrafficLights extends TrafficLights {
 
@@ -12,11 +10,9 @@ public class RandomTrafficLights extends TrafficLights {
     }
 
     @Override
-    public void changeindex() {
+    public void changeIndex() {
         Random r = new Random();
         int I = this.getroads().size() * r.nextInt();
         this.changeLights(I);
-
     }
-    
 }

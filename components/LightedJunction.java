@@ -5,12 +5,23 @@ public class LightedJunction extends Junction {
 
     public LightedJunction() {
         super();
-        // TODO randomly enable disable something in lights
+        Init(getRandomBoolean(), getRandomBoolean());
     }
+
     public LightedJunction(String name, double x, double y, boolean sequential, boolean lightsOn) {
         super(name, x, y);
-        // TODO use the booleans on lights
+        Init(sequential, lightsOn);
     }
+
+    private void Init(boolean sequential, boolean lightsOn) {       
+        if (sequential)
+            lights = new SequentialTrafficLights(getEnteringRoads());
+        else
+            lights = new RandomTrafficLights(getEnteringRoads());
+        
+        lights.setTrafficLightsOn(lightsOn);
+    }
+
     @Override
     public double calcEstimatedTime(Object object) {
         // TODO method stub
@@ -21,4 +32,8 @@ public class LightedJunction extends Junction {
         // TODO method stub
         return false;
     }
+
+	public TrafficLights getLights() {
+		return lights;
+	}
 }

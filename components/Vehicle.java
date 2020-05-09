@@ -1,8 +1,7 @@
 package components;
 
-import java.util.ArrayList;
-import java.util.Random;
-
+import utilities.Utilities;
+import utilities.Timer;
 /**
  * Vehicle class
  * 
@@ -10,7 +9,7 @@ import java.util.Random;
  * @author Asaf Bereby, ID 208058412, Campus Be'er Sheva
  */
 
-public class Vehicle {
+public class Vehicle implements Utilities, Timer {
     /**
      * int value for id parameter
      */
@@ -30,7 +29,7 @@ public class Vehicle {
     /**
      * road/junction parameter for current RoutPart
      */
-    private RoutParts currentRoutePart;
+    private RouteParts currentRoutePart;
     /**
      * parameter for time passed since beggining
      */
@@ -176,6 +175,11 @@ public class Vehicle {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public void incrementDrivingTime() {
+        // TODO Auto-generated method stub
     }
 
 }

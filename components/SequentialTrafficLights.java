@@ -1,9 +1,7 @@
-package utilities;
+package components;
 
 import java.util.ArrayList;
 import java.util.Random;
-
-import components.Road;
 
 public class SequentialTrafficLights extends TrafficLights {
     private int increment;
@@ -14,7 +12,7 @@ public class SequentialTrafficLights extends TrafficLights {
     }
 
     @Override
-    public void changeindex() {                                   ///not sure about this method cause its the same as RandoTrafficLights method
+    public void changeIndex() {                                   ///not sure about this method cause its the same as RandoTrafficLights method
         Random r = new Random();
         int I = this.getroads().size() * r.nextInt();
         this.changeLights(I);
@@ -26,8 +24,6 @@ public class SequentialTrafficLights extends TrafficLights {
     }
 
     public void setincrement(int increment) {
-        this.increment =  increment;
-        
+        this.increment =  increment;   
     }
-    
 }

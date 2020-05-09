@@ -1,7 +1,5 @@
 package utilities;
 
-import java.util.Random;
-
 /**
  * Point coordinate class
  * 
@@ -41,14 +39,14 @@ public abstract class Point implements Utilities {
     public Point(double x, double y) {
         if (!intSetX(x, true)) {
             this.x = getRandomDouble(minVal, maxX);
-            System.out.printf(", therefore it was replaced by %f\n", this.x);
+            correctingMessage(x, this.x, "X");
         }
         if (!intSetY(y, true)) {
             this.y = getRandomDouble(minVal, maxY);
-            System.out.printf(", therefore it was replaced by %f\n", this.y);
+            correctingMessage(x, this.x, "Y");
         }
 
-        System.out.printf("Point object %s has been created\n", toString());
+        successMessage(String.format("Point (%f , %f) ", this.x, this.y));
     }
 
     public Point() {
@@ -72,17 +70,13 @@ public abstract class Point implements Utilities {
      * @return true if x is in the valid range, false otherwise
      */
     private boolean intSetX(double x, boolean constructor) {
-        if (checkValue(x, minVal, maxX)) {
-            System.out.printf("%f is not valid X value", x);
-
+        if (!checkValue(x, minVal, maxX)) {
             if (!constructor)
-                System.out.printf("\n");
+                errorMessage(x, "X");
 
             return false;
         }
-
         this.x = x;
-
         return true;
     }
 
@@ -113,11 +107,9 @@ public abstract class Point implements Utilities {
      * @return true if y is in the valid range, false otherwise
      */
     public boolean intSetY(double y, boolean constructor) {
-        if (checkValue(y, minVal, maxY)) {
-            System.out.printf("%f is not valid Y value", y);
-
+        if (!checkValue(y, minVal, maxY)) {
             if (!constructor)
-                System.out.printf("\n");
+                errorMessage(y, "Y");
 
             return false;
         }

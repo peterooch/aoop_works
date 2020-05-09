@@ -47,7 +47,7 @@ public class Junction extends Point implements RouteParts {
         enteringRoads = new ArrayList<>();
         exitingRoads = new ArrayList<>();
         objectsCount++;
-        System.out.printf("%s object has been created\n", toString());
+        successMessage(toString());
     }
     /**
      * junction name setter
@@ -139,7 +139,7 @@ public class Junction extends Point implements RouteParts {
     }
     /**
      * function thats checks the availability of the junction
-     * @param road
+     * @param vehicle 
      * @return boolean value that stands for the availability of the junction
      */
     public boolean checkAvailability(Vehicle vehicle) {

@@ -1,13 +1,8 @@
 package components;
 
 import java.util.ArrayList;
-import java.util.Random;
-
-import components.Map;
-import components.Vehicle;
-import components.VehicleType;
-import components.Timer;
-
+import utilities.Timer;
+import utilities.Utilities;
 /**
  * Driving class
  * 
@@ -15,12 +10,12 @@ import components.Timer;
  * @author Asaf Bereby, ID 208058412, Campus Be'er Sheva
  */
 
-public class Driving {
+public class Driving implements Utilities, Timer {
 
     /**
      * map value for current map
      */
-    private Map Map;
+    private Map map;
     /**
      * list of vehicles for  vehicles
      */
@@ -40,31 +35,57 @@ public class Driving {
      * @param numOfVehicles
      */
     public Driving(int numOfJuncs, int numOfVehicles) {
-        Map = new Map(numOfJuncs);
+        map = new Map(numOfJuncs);
         vehicles = new ArrayList<Vehicle>(numOfVehicles);
-        addVehicles(numOfVehicles);
+        drivingTime = 0;
+        
+        for (int i = 0; i < 0; i++) {
+            Junction randJunc = map.getJunctions().get(getRandomInt(0, map.getJunctions().size() - 1));
+            Road randRoad;
+    
+            if (!randJunc.getExitingRoads().isEmpty()) {
+                randRoad = randJunc.getExitingRoads().get(getRandomInt(0, randJunc.getExitingRoads().size() - 1));
+            }
+            else if (!randJunc.getEnteringRoads().isEmpty()) {
+                randRoad = randJunc.getEnteringRoads().get(getRandomInt(0, randJunc.getEnteringRoads().size() - 1));
+            }
+            else {
+                i--;
+                continue;
+            }
+
+            Vehicle vehicle = new Vehicle(randRoad);
+            vehicles.add(vehicle);
+            allTimedElements.add(vehicle);
+        }
+
+        for (TrafficLights light : map.getTrafficLights())
+            allTimedElements.add(light);
+
     }
 
-    public void incrementDrivingTime(){                         ///how to promote the timed elements??????????????????
-        for(int i = 0 ; i < allTimedElements.size() ; i++){
+    @Override
+    public void incrementDrivingTime() {                         ///how to promote the timed elements??????????????????
+        for (Timer timedElement : allTimedElements) {
+            timedElement.incrementDrivingTime();
+            drivingTime++;
         }
     }
 
 
     /**
      * Starts the driving simulation
-     * @param allTimedElements the amount of turns made with all current vehicles
+     * @param numOfTurns the amount of turns made with all timed objects
      */
-    public void Drive(int numOfTurns) {
+    public void drive(int numOfTurns) {
     	for (int turn = 1 ; turn <= numOfTurns ; turn++){
             incrementDrivingTime();
         }
     }
   
-
     @Override
     public boolean equals(Object other) {
-        return (other instanceof Driving) && Map == ((Driving)other).Map;
+        return (other instanceof Driving) && map == ((Driving)other).map;
     }
 
     /**
@@ -72,22 +93,22 @@ public class Driving {
      * @return Map
      */
     public Map getMap() {
-        return Map;
+        return map;
     }
 
     /**
      * setter for Map
      * @param Map
      */
-    public void setMap(Map Map) {
-        this.Map = Map;
+    public void setMap(Map map) {
+        this.map = map;
     }
 
     /**
      * getter for vehicles
      * @return list of current vehicles
      */
-    public ArrayList<Vehicle> getvehicles() {
+    public ArrayList<Vehicle> getVehicles() {
         return vehicles;
     }
 
@@ -95,7 +116,7 @@ public class Driving {
      * setter of vehicles
      * @param vehicles
      */
-    public void setvehicles(ArrayList<Vehicle> vehicles) {
+    public void setVehicles(ArrayList<Vehicle> vehicles) {
         this.vehicles = vehicles;
     }
 
@@ -108,18 +129,10 @@ public class Driving {
     }
 
     /**
-     * setter for drivingTime
-     * @param drivingTime
-     */
-    public void setDrivingTime(int drivingTime) {
-        this.drivingTime = drivingTime;
-    }
-
-    /**
      * getter for maximum time
      * @return allTimedElements
      */
-    public ArrayList<Timer> getallTimedElements() {
+    public ArrayList<Timer> getAllTimedElements() {
         return allTimedElements;
     }
 
@@ -127,15 +140,7 @@ public class Driving {
      * setter for maximum time
      * @param allTimedElements
      */
-    public void setallTimedElements(ArrayList<Timer>) {
+    public void setAllTimedElements(ArrayList<Timer> allTimedElements) {
         this.allTimedElements = allTimedElements;
-    }
-
-    /**
-     * getter for vehicles
-     * @return vehicles
-     */
-    public ArrayList<Vehicle> getVehicles() {
-        return vehicles;
     }
 }
