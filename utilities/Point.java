@@ -46,12 +46,12 @@ public abstract class Point implements Utilities {
             correctingMessage(x, this.x, "Y");
         }
 
-        successMessage(String.format("Point (%f , %f) ", this.x, this.y));
+        //successMessage(String.format("Point (%f , %f) ", this.x, this.y));
     }
 
     public Point() {
-        /** Can't call getRandomDouble while in this phase */
-        this(-1, -1);
+        x = getRandomDouble(minVal, maxX);
+        y = getRandomDouble(minVal, maxY);
     }
     /**
      * X position getter

@@ -36,6 +36,7 @@ public class Driving implements Utilities, Timer {
      */
     public Driving(int numOfJuncs, int numOfVehicles) {
         map = new Map(numOfJuncs);
+        System.out.println("--- Game map has been created ----");
         vehicles = new ArrayList<Vehicle>(numOfVehicles);
         allTimedElements = new ArrayList<Timer>(numOfVehicles + numOfJuncs);
         drivingTime = 0;

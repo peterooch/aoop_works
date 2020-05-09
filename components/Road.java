@@ -127,7 +127,7 @@ public class Road implements RouteParts {
      */
     @Override
     public String toString() {
-        return String.format("Road %s -> %s", startJunction.getJunctionName(), endJunction.getJunctionName());
+        return String.format("Road %s -> %s, length: %d, max speed  %d", startJunction, endJunction, (int)length, maxSpeed);
     }
 
     /**

@@ -91,6 +91,12 @@ public abstract class TrafficLights implements Timer, Utilities {
             delay = 0;
 
         this.trafficLightsOn = trafficLightsOn;
+        if (roads.isEmpty())
+            return;
+
+        System.out.print((this instanceof RandomTrafficLights) ? "Random " : "Sequential ");
+        System.out.println("traffic lights " + id + " turned " + ((trafficLightsOn) ? "ON" : "OFF") + ", delay time: " + delay);
+        System.out.println("- " + roads.get(0));
     }
 
     public int getworkingTime() {

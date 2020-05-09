@@ -23,6 +23,10 @@ public class LightedJunction extends Junction {
     }
 
     @Override
+    public String toString() {
+        return super.toString() + " (Lighted)";
+    }
+    @Override
     public double calcEstimatedTime(Object object) {
         // TODO method stub
         return 0;

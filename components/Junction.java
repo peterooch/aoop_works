@@ -102,7 +102,7 @@ public class Junction extends Point implements RouteParts {
      */
     @Override
     public String toString() {
-        return "Junction " + junctionName;
+        return junctionName;
     }
 
     /**
