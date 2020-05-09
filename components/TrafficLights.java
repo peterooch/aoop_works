@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import utilities.Utilities;
 import utilities.Timer;
 
+/**
+ * Traffic Lights abstract class
+ * 
+ * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
+ * @author Asaf Bereby, ID 208058412, Campus Be'er Sheva
+ */
 public abstract class TrafficLights implements Timer, Utilities {
     private static int objectsCount = 1;
     private int delay;

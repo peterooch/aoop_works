@@ -157,6 +157,7 @@ public class Road implements RouteParts {
     @Override
     public void checkIn(Vehicle vehicle) {
         waitingVehicles.add(vehicle);
+        System.out.println(vehicle);
         System.out.println("- is starting to move on " + this +  ", time to finish: " + calcEstimatedTime(vehicle) + ".");
     }
 
