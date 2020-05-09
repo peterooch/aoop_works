@@ -68,7 +68,7 @@ public class Driving implements Utilities, Timer {
     }
 
     @Override
-    public void incrementDrivingTime() {                         ///how to promote the timed elements??????????????????
+    public void incrementDrivingTime() { 
         for (Timer timedElement : allTimedElements) {
             timedElement.incrementDrivingTime();
             drivingTime++;
@@ -82,6 +82,7 @@ public class Driving implements Utilities, Timer {
      */
     public void drive(int numOfTurns) {
     	for (int turn = 1 ; turn <= numOfTurns ; turn++){
+            fancyprint("TURN " + turn, 80);
             incrementDrivingTime();
         }
     }

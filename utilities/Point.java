@@ -15,11 +15,11 @@ public abstract class Point implements Utilities {
     /**
      * Maximal X value
      */
-    public static final double maxX = 1000000;
+    public static final double maxX = 800;
     /**
      * Maximal Y value
      */
-    public static final double maxY = 800;
+    public static final double maxY = 600;
 
     /**
      * Point's x position

@@ -143,7 +143,11 @@ public class Junction extends Point implements RouteParts {
      * @return boolean value that stands for the availability of the junction
      */
     public boolean checkAvailability(Vehicle vehicle) {
-        // TODO to be determined
+        for (Road road : enteringRoads) {            
+            if (road.equals(vehicle.getLastRoad()) && !road.getWaitingVehicles().isEmpty()) {
+                return road.getWaitingVehicles().get(0).equals(vehicle);
+            }
+        }
         return false;
     }
 
@@ -172,7 +176,12 @@ public class Junction extends Point implements RouteParts {
 
     @Override
     public void stayOnCurrentPart(Vehicle vehicle) {
-        // TODO Auto-generated method stub
-
+        System.out.println(vehicle);
+        if (this instanceof LightedJunction) {
+            System.out.println("- is waiting at " + this + " for green light");
+        }
+        else {
+            System.out.println("- is waiting at " + this + " - there are cars with higher priorities.");
+        }
     }
 }

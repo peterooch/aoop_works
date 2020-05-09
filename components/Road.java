@@ -144,37 +144,49 @@ public class Road implements RouteParts {
 
     @Override
     public double calcEstimatedTime(Object object) {
-        // TODO Auto-generated method stub
-        return 0;
+        if (!(object instanceof Vehicle))
+            return 0;
+        return (int)(length / Math.min(maxSpeed,((Vehicle)object).getVehicleType().getAverageSpeed()));
     }
 
     @Override
     public boolean canLeave(Vehicle vehicle) {
-        // TODO Auto-generated method stub
-        return false;
+        return vehicle.getTimeOnCurrentPart() >= calcEstimatedTime(vehicle);
     }
 
     @Override
     public void checkIn(Vehicle vehicle) {
-        // TODO Auto-generated method stub
-
+        waitingVehicles.add(vehicle);
+        System.out.println("- is starting to move on " + this +  ", time to finish: " + calcEstimatedTime(vehicle) + ".");
     }
 
     @Override
     public void checkOut(Vehicle vehicle) {
-        // TODO Auto-generated method stub
-
+        removeVehicleFromWaitingVehicles(vehicle);
+        // TODO place a print here
     }
-
+    public void removeVehicleFromWaitingVehicles(Vehicle vehicle) {
+        waitingVehicles.remove(vehicle);
+    }
     @Override
     public RouteParts findNextPart(Vehicle vehicle) {
-        // TODO Auto-generated method stub
-        return null;
+        return endJunction;
     }
 
     @Override
     public void stayOnCurrentPart(Vehicle vehicle) {
-        // TODO Auto-generated method stub
-
+        System.out.println(vehicle);
+        System.out.println("- is still moving on " + toString());
     }
+
+    public void setGreenLight(boolean greenLight) {
+        this.greenLight = greenLight;
+    }
+
+    public boolean getGreenLight() {
+        return greenLight;
+    }
+	public ArrayList<Vehicle> getWaitingVehicles() {
+		return waitingVehicles;
+	}
 }

@@ -62,8 +62,8 @@ public class Vehicle implements Utilities, Timer {
         currentRoutePart = road;
         currentRoute = new Route(road, this);
         successMessage(toString());
-        System.out.println("-  is starting a new " + currentRoute + ", estinated time for route: " + currentRoute.calcEstimatedTime(this) + ".");
-        System.out.println("-  is starting to move on " + currentRoutePart +  ", time to finish: " + currentRoutePart.calcEstimatedTime(this) + ".");
+        System.out.println("- is starting a new " + currentRoute + ", estimated time for route: " + currentRoute.calcEstimatedTime(this) + ".");
+        road.checkIn(this);
     }
 
     /**

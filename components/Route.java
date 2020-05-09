@@ -98,7 +98,7 @@ public class Route implements RouteParts {
             else {
                 generateRoute(vehicle.getLastRoad(), vehicle);
             }
-            System.out.println("-  is starting a new " + this + ", estinated time for route: " + calcEstimatedTime(vehicle) + ".");
+            System.out.println("- is starting a new " + this + ", estinated time for route: " + calcEstimatedTime(vehicle) + ".");
             return getStart();
         }
         return null; /* Should not happen */
@@ -106,7 +106,8 @@ public class Route implements RouteParts {
 
     @Override
     public void stayOnCurrentPart(Vehicle vehicle) {
-        System.out.println(vehicle + " is staying on " + toString());
+        System.out.println(vehicle);
+        System.out.println(vehicle + " is still moving on " + toString());
     }
 
     @Override
