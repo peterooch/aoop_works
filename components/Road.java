@@ -33,9 +33,9 @@ public class Road implements RouteParts {
         endJunction.addEnteringRoad(this);
 
         /** Pick random speed limit */
-        maxSpeed = allowedSpeedOptions[getRandomInt(0, allowedSpeedOptions.length)];
+        maxSpeed = allowedSpeedOptions[getRandomInt(0, allowedSpeedOptions.length - 1)];
 
-        System.out.printf("%s object has been created\n", toString());
+        successMessage(toString());
     }
     /**
      * function that counts the length of the road

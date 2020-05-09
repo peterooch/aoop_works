@@ -27,7 +27,7 @@ public interface Utilities {
     }
 
     default public int getRandomInt(int min, int max){
-        int randomValue = min + (max - min) * rand.nextInt();
+        int randomValue = min + rand.nextInt((max - min) + 1);
         return randomValue;
     }
 

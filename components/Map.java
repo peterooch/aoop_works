@@ -47,7 +47,7 @@ public class Map implements Utilities {
      */
     private void generateJunctions(int count) {
         junctions = new ArrayList<Junction>(count);
-
+        lights =  new ArrayList<TrafficLights>();
         for (int i = 0; i < count; i++) {
             Junction newJunc = getRandomBoolean() ? new Junction() : new LightedJunction();
 

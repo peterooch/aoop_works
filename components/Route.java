@@ -15,8 +15,29 @@ public class Route implements RouteParts {
 
     public Route(RouteParts start, Vehicle vehicle) {
         this.vehicle = vehicle;
-        // TODO build route
         routeParts = new ArrayList<RouteParts>(10);
+        int added = 1;
+        routeParts.add(start);
+        RouteParts curr = start;
+        while (added < 10) {
+            if (curr instanceof Junction) {
+                Junction currJunc = (Junction)curr;
+
+                if (currJunc.getExitingRoads().isEmpty())
+                    break; // nothing to add
+                
+                curr = currJunc.getExitingRoads().get(getRandomInt(0, currJunc.getExitingRoads().size() - 1));
+            } else if (curr instanceof Road) {
+                Road currRoad = (Road)curr;
+
+                curr = currRoad.getEndJunction();
+            } else {
+                break;
+            }
+            routeParts.add(curr);
+            added++;
+        }
+        vehicle.setCurrentRoute(this);
     }
 
     @Override

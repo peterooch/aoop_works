@@ -11,13 +11,17 @@ import utilities.Timer;
 
 public class Vehicle implements Utilities, Timer {
     /**
+     * parameter that counts the objects
+     */
+    private static int objectsCount;
+    /**
      * int value for id parameter
      */
     private int id;                                                     /// need intialization. dont undestand from the HW orders.
     /**
      * parameter for vehicle type
      */
-    private VehicleType type;
+    private VehicleType vehicleType;
     /**
      * Route parameter for current route
      */
@@ -39,14 +43,9 @@ public class Vehicle implements Utilities, Timer {
      */
     private int timeOnCurrentPart;
     /**
-     * parameter that counts the objects
-     */
-    private int objectsCount;
-    /**
      * String parameter for status(delay in junc etc..)
      */
     private String status; 
-
 
 
     /** 
@@ -54,9 +53,14 @@ public class Vehicle implements Utilities, Timer {
      * @param road Vehicle ID
      */
     public Vehicle(Road road) {
-        
-        
-       
+        status = null;
+        id = objectsCount++;
+        timeFromRouteStart = 0;
+        timeOnCurrentPart = 0;
+        vehicleType = VehicleType.getRandomVehicleType();
+        lastRoad = road;
+        currentRoutePart = road;
+        currentRoute = new Route(road, this);
     }
 
     /**
@@ -86,16 +90,16 @@ public class Vehicle implements Utilities, Timer {
      * type setter
      * @param type
      */
-    public void setType(VehicleType type) {
-        this.type = type;
+    public void setVehicleType(VehicleType vehicleType) {
+        this.vehicleType = vehicleType;
     }
 
     /**
      * type getter
      * @return type
      */
-    public VehicleType getType() {
-        return type;
+    public VehicleType getVehicleType() {
+        return vehicleType;
     }
 
     /**
@@ -130,11 +134,6 @@ public class Vehicle implements Utilities, Timer {
         return lastRoad;
     }
 
-    /**
-     * movesNow setter
-     * @param movesNow
-     */
-    
     @Override
     public boolean equals(Object other) {
         return (other instanceof Vehicle) && (id == ((Vehicle)other).id);
@@ -142,7 +141,7 @@ public class Vehicle implements Utilities, Timer {
 
     @Override
     public String toString() {
-        return String.format("ID: %d, %s", id, type.toString());
+        return String.format("ID: %d, %s", id, vehicleType.toString());
     }
 
     public int getTimeFromRouteStart() {
@@ -163,10 +162,6 @@ public class Vehicle implements Utilities, Timer {
 
     public int getObjectsCount() {
         return objectsCount;
-    }
-
-    public void setObjectsCount(int objectsCount) {
-        this.objectsCount = objectsCount;
     }
 
     public String getStatus() {

@@ -37,6 +37,7 @@ public class Driving implements Utilities, Timer {
     public Driving(int numOfJuncs, int numOfVehicles) {
         map = new Map(numOfJuncs);
         vehicles = new ArrayList<Vehicle>(numOfVehicles);
+        allTimedElements = new ArrayList<Timer>(numOfVehicles + numOfJuncs);
         drivingTime = 0;
         
         for (int i = 0; i < 0; i++) {
