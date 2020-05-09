@@ -158,12 +158,15 @@ public class Junction extends Point implements RouteParts {
 
     @Override
     public void checkIn(Vehicle vehicle) {
-        // TODO Auto-generated method stub
+        vehicle.getLastRoad().getWaitingVehicles().add(vehicle);
+        vehicle.setCurrentRoutePart(this);
     }
 
     @Override
     public void checkOut(Vehicle vehicle) {
-        // TODO Auto-generated method stub
+        vehicle.getLastRoad().getWaitingVehicles().remove(vehicle);
+        vehicle.setCurrentRoutePart(vehicle.getCurrentRoutePart().findNextPart(vehicle));
+
 
     }
 

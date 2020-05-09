@@ -194,4 +194,8 @@ public class Vehicle implements Utilities, Timer {
 		return currentRoutePart;
 	}
 
+    public void setCurrentRoutePart(RouteParts currentRoutePart) {
+        this.currentRoutePart = currentRoutePart;
+    }
+
 }
