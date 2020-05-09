@@ -1,7 +1,6 @@
 package components;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Sequential Traffic Lights class
@@ -12,17 +11,21 @@ import java.util.Random;
 public class SequentialTrafficLights extends TrafficLights {
     private int increment;
 
+    /**
+     * Class contstructor
+     * @param roads list of roads that the light is controlling
+     */
     public SequentialTrafficLights(ArrayList<Road> roads) {
         super(roads);
         this.increment = 1;
     }
 
+    /**
+     * Switch to the next road
+     */
     @Override
     public void changeIndex() {                                   ///not sure about this method cause its the same as RandoTrafficLights method
-        Random r = new Random();
-        int I = this.getroads().size() * r.nextInt();
-        this.changeLights(I);
-
+        this.changeLights(++increment);
     }
 
     public int getincrement() {

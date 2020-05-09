@@ -13,10 +13,20 @@ public class Route implements RouteParts {
     private Vehicle vehicle; // What is my use
     private ArrayList<RouteParts> routeParts;
 
+    /**
+     * Class constuctor
+     * @param start initial segment
+     * @param vehicle vehicle that will use the route
+     */
     public Route(RouteParts start, Vehicle vehicle) {
         this.vehicle = vehicle;
         generateRoute(start, vehicle);
     }
+    /**
+     * Generate a 10 segment route starting from start
+     * @param start initial segment
+     * @param vehicle vehicle that will use the route
+     */
     private void generateRoute(RouteParts start, Vehicle vehicle) {
         routeParts = new ArrayList<RouteParts>(10);
         int added = 1;
@@ -43,10 +53,15 @@ public class Route implements RouteParts {
         }
         vehicle.setCurrentRoute(this);
     }
-
+    /**
+     * get the starting segment of the route
+     */
     public RouteParts getStart() {
         return routeParts.get(0);
     }
+    /**
+     * get the final segment of the route
+     */
     public RouteParts getEnd() {
         return routeParts.get(routeParts.size() - 1);
     }

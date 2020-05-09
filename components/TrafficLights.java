@@ -21,6 +21,10 @@ public abstract class TrafficLights implements Timer, Utilities {
     private boolean trafficLightsOn;
     private int workingTime;
 
+    /**
+     * Class contstructor
+     * @param roads list of roads that the light is controlling
+     */
     public TrafficLights(ArrayList<Road> roads){
         id = objectsCount++;
         this.roads = roads;
@@ -31,11 +35,12 @@ public abstract class TrafficLights implements Timer, Utilities {
 
     public abstract void changeIndex();
 
+    /**
+     * Switch the current green light road to a different one
+     * @param nextRoadIndex green light road index
+     */
     public void changeLights(int nextRoadIndex){
-        if (nextRoadIndex >= roads.size())
-            greenLightIndex = 0;
-        else
-            greenLightIndex = nextRoadIndex;
+        greenLightIndex = nextRoadIndex % roads.size();
 
         for (int i = 0; i < roads.size(); i++) {
             roads.get(i).setGreenLight((i == greenLightIndex) ? true : false);
@@ -49,8 +54,8 @@ public abstract class TrafficLights implements Timer, Utilities {
     @Override
     public void incrementDrivingTime() {
         this.workingTime++;
-        if(workingTime % delay == 0){
-            this.changeLights(this.getGreenLightIndex() + 1);
+        if (workingTime % delay == 0){
+            changeIndex();
         }
     }
 

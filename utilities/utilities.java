@@ -10,6 +10,12 @@ import java.util.Random;
 public interface Utilities {
     Random rand = new Random();
 
+    /** Check if a value is between a specific range
+     * @param Val value to be checked
+     * @param min min limit
+     * @param max max limit
+     * @return true if the value is in the range, false otherwise
+     */
     default public boolean checkValue(double Val, double min, double max){
         return (Val <= max) && (Val >= min);
     }
@@ -40,6 +46,12 @@ public interface Utilities {
         System.out.println(objName + " has been created.");
     }
 
+    /**
+     * Prints fancy text like this
+     *  ---- FANCY TEXT ----
+     * @param msg Message in the middle
+     * @param width total text width including the message
+     */
     default public void fancyprint(String msg, int width) {
         int dash_count = width - msg.length() - 2;
         String output = "";

@@ -46,8 +46,8 @@ public class Map implements Utilities {
     }
 
     /**
-     * function that generates junctions number
-     * @param count
+     * function that generates "count" junctions
+     * @param count amounts of junction to be made
      */
     private void generateJunctions(int count) {
         junctions = new ArrayList<Junction>(count);
@@ -100,6 +100,9 @@ public class Map implements Utilities {
         return roads;
     }
 
+    /**
+     * Return all the lights that exist in the map
+     */
 	public ArrayList<TrafficLights> getTrafficLights() {
 		return lights;
     }

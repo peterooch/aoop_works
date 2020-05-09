@@ -8,16 +8,30 @@ package components;
 public class LightedJunction extends Junction {
     private TrafficLights lights;
 
+    /**
+     * Default constructor
+     */
     public LightedJunction() {
         super();
         Init(getRandomBoolean(), getRandomBoolean());
     }
 
+    /**
+     * More specific constructor
+     * @param name junction name
+     * @param x junction x position
+     * @param y junction y position
+     * @param sequential are the lights are sequetial(true) or random(false)
+     * @param lightsOn turn the lights on ?
+     */
     public LightedJunction(String name, double x, double y, boolean sequential, boolean lightsOn) {
         super(name, x, y);
         Init(sequential, lightsOn);
     }
 
+    /**
+     * Internal init function to share code between constructors
+     */
     private void Init(boolean sequential, boolean lightsOn) {       
         if (sequential)
             lights = new SequentialTrafficLights(getEnteringRoads());

@@ -49,6 +49,9 @@ public abstract class Point implements Utilities {
         //successMessage(String.format("Point (%f , %f) ", this.x, this.y));
     }
 
+    /**
+     * Default constructor
+     */
     public Point() {
         x = getRandomDouble(minVal, maxX);
         y = getRandomDouble(minVal, maxY);
@@ -129,17 +132,28 @@ public abstract class Point implements Utilities {
         return intSetY(y, false);
     }
 
+    /**
+     * toString method
+     */
     @Override
     public String toString() {
         return String.format("(%f , %f)", x, y);
     }
 
+    /**
+     * equals method
+     */
     @Override
     public boolean equals(Object other) {
         if (other instanceof Point)
             return ((Point)other).x == x && ((Point)other).y == y;
         return false;
     }
+    /**
+     * Returns the distance between 2 points
+     * @param other point to the other side of the line
+     * @return hypertenuse length
+     */
     public double calcDistace(Point other) {
         double dx = x - other.x;
         double dy = y - other.y;

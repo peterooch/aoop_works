@@ -10,10 +10,17 @@ import java.util.ArrayList;
  */
 public class RandomTrafficLights extends TrafficLights {
 
+    /**
+     * Class contstructor
+     * @param roads list of roads that the light is controlling
+     */
     public RandomTrafficLights(ArrayList<Road> roads) {
         super(roads);
     }
 
+    /**
+     * Switch to a randomly chosen road
+     */
     @Override
     public void changeIndex() {
         this.changeLights(getRandomInt(0, getroads().size() - 1));

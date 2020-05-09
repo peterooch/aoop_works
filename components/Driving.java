@@ -31,8 +31,8 @@ public class Driving implements Utilities, Timer {
 
     /**
      * constructor that gets two parameters:
-     * @param numOfJuncs
-     * @param numOfVehicles
+     * @param numOfJuncs number of junctions to be made
+     * @param numOfVehicles number of vehicles to be made
      */
     public Driving(int numOfJuncs, int numOfVehicles) {
         map = new Map(numOfJuncs);
@@ -67,6 +67,7 @@ public class Driving implements Utilities, Timer {
 
     }
 
+    /** Increments the timer of all the internal timer objects, Timer interface method */
     @Override
     public void incrementDrivingTime() { 
         for (Timer timedElement : allTimedElements) {
@@ -74,7 +75,6 @@ public class Driving implements Utilities, Timer {
             drivingTime++;
         }
     }
-
 
     /**
      * Starts the driving simulation
@@ -87,6 +87,10 @@ public class Driving implements Utilities, Timer {
         }
     }
   
+    /**
+     * Equals method
+     * @param other object to compare with
+     */
     @Override
     public boolean equals(Object other) {
         return (other instanceof Driving) && map == ((Driving)other).map;

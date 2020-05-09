@@ -42,6 +42,9 @@ public class Junction extends Point implements RouteParts {
         Init("Junction " + objectsCount);
     }
 
+    /** Internal init function
+     * @param name junction name
+     */
     private void Init(String name) {
         junctionName = name;
         enteringRoads = new ArrayList<>();
@@ -117,14 +120,27 @@ public class Junction extends Point implements RouteParts {
         return false;
     }
     
+    /**
+     * add a road to the internal entering road list
+     * @param road road the be added
+     */
     public void addEnteringRoad(Road road) {
         enteringRoads.add(road);
     }
 
+    /**
+     * add a road to the internal exiting road list
+     * @param road road the be added
+     */
     public void addExitingRoad(Road road) {
         exitingRoads.add(road);
     }
 
+    /**
+     * Calculate how much time the vehicle will sit in the junction
+     * @param object (Supposedly vehicle) vehicle object to be evalued
+     * @return how much time
+     */
     @Override
     public double calcEstimatedTime(Object object) {
         if (!(object instanceof Vehicle))
@@ -134,12 +150,16 @@ public class Junction extends Point implements RouteParts {
 
         return enteringRoads.indexOf(vehicle.getLastRoad()) + 1;
     }
+    /**
+     * Return the amount of junction objects that were created
+     * @return
+     */
     public static int getJunctionCount() {
         return objectsCount;
     }
     /**
      * function thats checks the availability of the junction
-     * @param vehicle 
+     * @param vehicle vehicle to be checked
      * @return boolean value that stands for the availability of the junction
      */
     public boolean checkAvailability(Vehicle vehicle) {
@@ -151,11 +171,20 @@ public class Junction extends Point implements RouteParts {
         return false;
     }
 
+    /**
+     * Check if the vehicle can leave the junction
+     * @param vehicle vehicle to be checked
+     * @return true if the vehicle can leave, false otherwise
+     */
     @Override
     public boolean canLeave(Vehicle vehicle) {
         return checkAvailability(vehicle);
     }
 
+    /**
+     * "Checkin" a vehicle into the junction
+     * @param vehicle vehicle to be "checkedin"
+     */
     @Override
     public void checkIn(Vehicle vehicle) {
         System.out.println(vehicle);
@@ -163,11 +192,20 @@ public class Junction extends Point implements RouteParts {
         vehicle.getLastRoad().getWaitingVehicles().add(vehicle);
     }
 
+    /**
+     * "Checkout" a vehicle out of the junction
+     * @param vehicle vehicle to be "checkedout"
+     */
     @Override
     public void checkOut(Vehicle vehicle) {
+        System.out.println(vehicle);
+        System.out.println("- is leaving " + this + ".");
         vehicle.getLastRoad().getWaitingVehicles().remove(vehicle);
     }
 
+    /**
+     * 
+     */
     @Override
     public RouteParts findNextPart(Vehicle vehicle) {
         for (Road road : exitingRoads) {
@@ -178,7 +216,10 @@ public class Junction extends Point implements RouteParts {
         }
         return null;
     }
-
+    /**
+     * Print that the vehicle will stay in its current location
+     * @param vehicle the vehicle
+     */
     @Override
     public void stayOnCurrentPart(Vehicle vehicle) {
         System.out.println(vehicle);
