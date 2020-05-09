@@ -10,11 +10,11 @@ public interface Utilities {
     }
 
     default public void correctingMessage(double wrongVal, double correctVal, String varName){
-        System.out.print("The value " + wrongVal + " is illegal for " + varName +", therefore has been replaced with " + correctVal + "\n");
+        System.out.println("The value " + wrongVal + " is illegal for " + varName +", therefore has been replaced with " + correctVal);
     }
 
     default public void errorMessage(double wrongVal, String varName){
-        System.out.print("The value " + wrongVal + " for " + varName + " is not suitable" + "\n");
+        System.out.println("The value " + wrongVal + " for " + varName + " is not suitable");
     }
 
     default public boolean getRandomBoolean(){
@@ -32,6 +32,19 @@ public interface Utilities {
     }
 
     default public void successMessage(String objName){
-        System.out.print(objName + " has been created.\n");
+        System.out.println(objName + " has been created.");
+    }
+
+    default public void fancyprint(String msg, int width) {
+        int dash_count = width - msg.length() - 2;
+        String output = "";
+        for (int i = 0; i < dash_count / 2; i++)
+            output += "-";
+        output += " " + msg + " ";
+        for (int i = 0; i < dash_count / 2; i++)
+            output += "-";
+        if (dash_count % 2 == 1)
+            output += "-";
+        System.out.println(output);
     }
 }

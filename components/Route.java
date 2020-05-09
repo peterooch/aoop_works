@@ -10,11 +10,14 @@ import java.util.ArrayList;
  */
 
 public class Route implements RouteParts {
-    private Vehicle vehicle;
+    private Vehicle vehicle; // What is my use
     private ArrayList<RouteParts> routeParts;
 
     public Route(RouteParts start, Vehicle vehicle) {
         this.vehicle = vehicle;
+        generateRoute(start, vehicle);
+    }
+    private void generateRoute(RouteParts start, Vehicle vehicle) {
         routeParts = new ArrayList<RouteParts>(10);
         int added = 1;
         routeParts.add(start);
@@ -40,39 +43,74 @@ public class Route implements RouteParts {
         vehicle.setCurrentRoute(this);
     }
 
+    public RouteParts getStart() {
+        return routeParts.get(0);
+    }
+    public RouteParts getEnd() {
+        return routeParts.get(routeParts.size() - 1);
+    }
+
     @Override
     public double calcEstimatedTime(Object object) {
-        // TODO Auto-generated method stub
-        return 0;
+        if (!(object instanceof Vehicle)) 
+            return 0;
+
+        double time = 0;
+
+        for (RouteParts part : routeParts)
+            time += part.calcEstimatedTime(object);
+
+        return time;
     }
 
     @Override
     public boolean canLeave(Vehicle vehicle) {
-        // TODO Auto-generated method stub
-        return false;
+        return vehicle.getCurrentRoutePart().equals(getEnd());
     }
 
     @Override
     public void checkIn(Vehicle vehicle) {
-        // TODO Auto-generated method stub
-
+        // Its not really clear what is needed here...
+        this.vehicle = vehicle;
+        vehicle.setCurrentRoute(this);
     }
 
     @Override
     public void checkOut(Vehicle vehicle) {
-        // TODO Auto-generated method stub
-
+        // "Releasing" the vehicle object....
+        this.vehicle = null;
     }
 
     @Override
     public RouteParts findNextPart(Vehicle vehicle) {
-        // TODO Auto-generated method stub
-        return null;
+        if (!canLeave(vehicle))
+            return routeParts.get(routeParts.indexOf(vehicle.getCurrentRoutePart()) + 1);
+        
+        System.out.println("- has finished the " + this);
+        System.out.println("- Time spent on the route: " + vehicle.getTimeFromRouteStart());
+
+        if (vehicle.getCurrentRoutePart() instanceof Junction) {
+            Junction junc = (Junction)vehicle.getCurrentRoutePart();
+            
+            if (junc.getExitingRoads().isEmpty()) {
+                generateRoute(getStart(), vehicle);
+            }
+            else {
+                generateRoute(vehicle.getLastRoad(), vehicle);
+            }
+            System.out.println("-  is starting a new " + this + ", estinated time for route: " + calcEstimatedTime(vehicle) + ".");
+            return getStart();
+        }
+        return null; /* Should not happen */
     }
 
     @Override
     public void stayOnCurrentPart(Vehicle vehicle) {
-        // TODO Auto-generated method stub
+        System.out.println(vehicle + " is staying on " + toString());
+    }
 
+    @Override
+    public String toString() {
+        return "Route from " + getStart() + " to " + getEnd();
     }
 }

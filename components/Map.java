@@ -37,11 +37,11 @@ public class Map implements Utilities {
      * @param junction_count
      */
     public Map(int junction_count) {
-        System.out.println("-------- Creating Junctions ------");
+        fancyprint("Creating Junctions", 80);
         generateJunctions(junction_count);
-        System.out.println("---------- Creating Roads --------");
+        fancyprint("Creating Roads", 80);
         generateSeqRoads();
-        System.out.println("----- Traffic lights turn on -----");
+        fancyprint("Traffic lights turn on", 80);
         turnLightsOn();
     }
 

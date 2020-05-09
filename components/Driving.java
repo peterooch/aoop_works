@@ -36,12 +36,13 @@ public class Driving implements Utilities, Timer {
      */
     public Driving(int numOfJuncs, int numOfVehicles) {
         map = new Map(numOfJuncs);
-        System.out.println("--- Game map has been created ----");
+        fancyprint("Game map has been created", 80);
         vehicles = new ArrayList<Vehicle>(numOfVehicles);
         allTimedElements = new ArrayList<Timer>(numOfVehicles + numOfJuncs);
         drivingTime = 0;
         
-        for (int i = 0; i < 0; i++) {
+        fancyprint("Creating vehicles", 80);
+        for (int i = 0; i < numOfVehicles; i++) {
             Junction randJunc = map.getJunctions().get(getRandomInt(0, map.getJunctions().size() - 1));
             Road randRoad;
     

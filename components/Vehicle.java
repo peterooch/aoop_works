@@ -50,7 +50,7 @@ public class Vehicle implements Utilities, Timer {
 
     /** 
      * constructor
-     * @param road Vehicle ID
+     * @param road starting road
      */
     public Vehicle(Road road) {
         status = null;
@@ -61,6 +61,9 @@ public class Vehicle implements Utilities, Timer {
         lastRoad = road;
         currentRoutePart = road;
         currentRoute = new Route(road, this);
+        successMessage(toString());
+        System.out.println("-  is starting a new " + currentRoute + ", estinated time for route: " + currentRoute.calcEstimatedTime(this) + ".");
+        System.out.println("-  is starting to move on " + currentRoutePart +  ", time to finish: " + currentRoutePart.calcEstimatedTime(this) + ".");
     }
 
     /**
@@ -72,7 +75,7 @@ public class Vehicle implements Utilities, Timer {
             this.currentRoutePart = currentRoutePart.findNextPart(this);
             this.currentRoutePart.checkIn(this);
         }
-        else{
+        else {
             this.currentRoutePart.stayOnCurrentPart(this);
         }
         
@@ -149,7 +152,7 @@ public class Vehicle implements Utilities, Timer {
 
     @Override
     public String toString() {
-        return String.format("ID: %d, %s", id, vehicleType.toString());
+        return String.format("Vehicle %d, %s", id, vehicleType.toString());
     }
 
     public int getTimeFromRouteStart() {
@@ -186,5 +189,9 @@ public class Vehicle implements Utilities, Timer {
         this.setTimeFromRouteStart(this.getTimeFromRouteStart() + 1);
         this.move();
     }
+
+	public RouteParts getCurrentRoutePart() {
+		return currentRoutePart;
+	}
 
 }
