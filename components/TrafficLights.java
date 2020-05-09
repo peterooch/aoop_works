@@ -26,14 +26,21 @@ public abstract class TrafficLights implements Timer, Utilities {
     public abstract void changeIndex();
 
     public void changeLights(int nextRoadIndex){
+        Road tmp = roads.get(0);
+        roads.set(0, roads.get(nextRoadIndex));
+        roads.set(nextRoadIndex, tmp);
 
-        // TODO fix this
-        System.out.println("Sequential traffic lights " + nextRoadIndex + " turned ON, delay time: " + delay);              ///not sure about this message
+        System.out.print((this instanceof RandomTrafficLights) ? "Random " : "Sequential ");
+        System.out.println("traffic lights " + id + " turned " + ((trafficLightsOn) ? "ON" : "OFF") + ", delay time: " + delay);
+        System.out.println("- " + roads.get(0));
 
     }
     @Override
-    public void incrementDrivingTime() {                         ///not complete, how do we know if its time to change the lights?
+    public void incrementDrivingTime() {
         this.workingTime++;
+        if(workingTime % delay == 0){
+            this.changeLights(this.getGreenLightIndex() + 1);
+        }
     }
 
     public int getObjectsCount() {
