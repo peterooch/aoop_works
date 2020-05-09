@@ -163,7 +163,6 @@ public class Road implements RouteParts {
     @Override
     public void checkOut(Vehicle vehicle) {
         removeVehicleFromWaitingVehicles(vehicle);
-        // TODO place a print here
     }
     public void removeVehicleFromWaitingVehicles(Vehicle vehicle) {
         waitingVehicles.remove(vehicle);

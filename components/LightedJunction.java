@@ -28,13 +28,11 @@ public class LightedJunction extends Junction {
     }
     @Override
     public double calcEstimatedTime(Object object) {
-        // TODO method stub
-        return 0;
+        return lights.getdelay() * (getEnteringRoads().size() - 1) + 1;
     }
     @Override
     public boolean canLeave(Vehicle vehicle) {
-        // TODO method stub
-        return false;
+        return vehicle.getLastRoad().getGreenLight() && vehicle.getLastRoad().getWaitingVehicles().indexOf(vehicle) == 0;
     }
 
 	public TrafficLights getLights() {

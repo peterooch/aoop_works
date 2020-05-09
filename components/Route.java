@@ -86,6 +86,7 @@ public class Route implements RouteParts {
         if (!canLeave(vehicle))
             return routeParts.get(routeParts.indexOf(vehicle.getCurrentRoutePart()) + 1);
         
+        System.out.println(vehicle);
         System.out.println("- has finished the " + this);
         System.out.println("- Time spent on the route: " + vehicle.getTimeFromRouteStart());
 

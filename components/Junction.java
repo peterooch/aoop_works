@@ -159,7 +159,6 @@ public class Junction extends Point implements RouteParts {
     @Override
     public void checkIn(Vehicle vehicle) {
         // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -170,7 +169,12 @@ public class Junction extends Point implements RouteParts {
 
     @Override
     public RouteParts findNextPart(Vehicle vehicle) {
-        // TODO Auto-generated method stub
+        for (Road road : exitingRoads) {
+            for (VehicleType type : road.getVehicleTypes()) {
+                if (vehicle.getVehicleType() == type)
+                    return road;
+            }
+        }
         return null;
     }
 
