@@ -17,7 +17,7 @@ public class Vehicle implements Utilities, Timer {
     /**
      * int value for id parameter
      */
-    private int id;                                                     /// need intialization. dont undestand from the HW orders.
+    private int id;
     /**
      * parameter for vehicle type
      */
@@ -64,9 +64,17 @@ public class Vehicle implements Utilities, Timer {
     }
 
     /**
-     * Attempts to advance the vehicle in its route
+     * Attempts to advance the vehicle to the next route
      */
     public void move() {
+        if(this.currentRoutePart.canLeave(this)){
+            this.currentRoutePart.checkOut(this);
+            this.currentRoutePart = currentRoutePart.findNextPart(this);
+            this.currentRoutePart.checkIn(this);
+        }
+        else{
+            this.currentRoutePart.stayOnCurrentPart(this);
+        }
         
     }
 
@@ -174,7 +182,9 @@ public class Vehicle implements Utilities, Timer {
 
     @Override
     public void incrementDrivingTime() {
-        // TODO Auto-generated method stub
+        this.setTimeOnCurrentPart(this.getTimeOnCurrentPart() + 1);
+        this.setTimeFromRouteStart(this.getTimeFromRouteStart() + 1);
+        this.move();
     }
 
 }
