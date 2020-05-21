@@ -10,9 +10,9 @@ package utilities;
 public abstract class Point implements Utilities {
     private double x;
     private double y;
-    private final int minVal = 0;
-    private final int maxX = 800;
-    private final int maxY = 600;
+    private static final int minVal = 0;
+    private static final int maxX = 800;
+    private static final int maxY = 600;
 
     /**
      * Constructor
@@ -127,21 +127,21 @@ public abstract class Point implements Utilities {
     /**
      * @return the minVal
      */
-    public int getMinVal() {
+    public static int getMinVal() {
         return minVal;
     }
 
     /**
      * @return the maxX
      */
-    public int getMaxX() {
+    public static int getMaxX() {
         return maxX;
     }
 
     /**
      * @return the maxY
      */
-    public int getMaxY() {
+    public static int getMaxY() {
         return maxY;
     }
 

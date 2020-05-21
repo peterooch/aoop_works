@@ -23,16 +23,13 @@ public class Route implements RouteParts {
         routeParts = new ArrayList<RouteParts>();
         this.vehicle = vehicle;
         routeParts.add(start);
-        boolean flag = true;
-        // TODO cancel the flag, use break
-        while (routeParts.size() < 10 && flag) {
-            RouteParts part = getLastPart().findNextPart(vehicle);
-            if (part != null) {
-                routeParts.add(part);
 
-            } else {
-                flag = false;
-            }
+        while (routeParts.size() < 10 ) {
+            RouteParts part = getLastPart().findNextPart(vehicle);
+            if (part == null) 
+                break;
+
+            routeParts.add(part);
         }
         checkIn(vehicle);
     }
