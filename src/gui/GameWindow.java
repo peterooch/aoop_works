@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import components.*;
 import utilities.Point;
 
@@ -112,6 +111,7 @@ public class GameWindow extends JFrame {
         }
 
         buttons[CREATE_BUTTON].addActionListener(e -> createDialog.setVisible(true));
+        /** Add actions for start, stop, resume */
         buttons[INFO_BUTTON].addActionListener(e -> displayVehicleTable(tableShowing ? false : true));
     }
 
@@ -126,12 +126,18 @@ public class GameWindow extends JFrame {
 	public void setDriving(int junc_count, int vehi_count) {
         currDriving = new Driving(junc_count, vehi_count);
         roadPanel.repaint();
+        if (tableShowing)
+        {
+            /* Refresh in an odd way */
+            displayVehicleTable(false);
+            displayVehicleTable(true);
+        }
     }
     
     private JPanel tablePanel = null;
     private boolean tableShowing = false;
     private void displayVehicleTable(boolean doShow) {
-        tableShowing = !tableShowing;
+        tableShowing = doShow;
 
         if (!doShow) {
             roadPanel.setVisible(true);
@@ -147,7 +153,7 @@ public class GameWindow extends JFrame {
             return;
 
         tablePanel = new JPanel();
-        tablePanel.setSize(800, 600);
+        tablePanel.setBounds(10, 0, 800, 600);
         tablePanel.setLayout(null);
 
         ArrayList<Vehicle> vlist = currDriving.getVehicles();
@@ -176,16 +182,16 @@ public class GameWindow extends JFrame {
             }
 
             row.add(String.valueOf(vehicle.getTimeOnCurrentPart()));
-            row.add(String.valueOf(vehicle.getVehicleType().getAverageSpeed()));
+            row.add(String.valueOf(Math.min(vehicle.getVehicleType().getAverageSpeed(), vehicle.getLastRoad().getMaxSpeed())));
             
             data.add(row);
         }
-        JTable table = new JTable(new DefaultTableModel(data, columns));
-        JTableHeader header = table.getTableHeader();
-        header.setBounds(0, 0, 800, 30);
-        table.setBounds(0, 30, 800, 630);
-        tablePanel.add(header);
-        tablePanel.add(table);
+        DefaultTableModel model = new DefaultTableModel(data, columns);
+        JTable table = new JTable(model);
+        table.setDefaultEditor(Object.class, null);
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setBounds(0, 0, 800, 530);
+        tablePanel.add(scrollPane);
         tablePanel.setVisible(true);
         roadPanel.setVisible(false);
         add(tablePanel);
