@@ -1,8 +1,12 @@
 package gui;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.Vector;
 import javax.swing.*;
-import components.Driving;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import components.*;
 import utilities.Point;
 
 public class GameWindow extends JFrame {
@@ -108,6 +112,7 @@ public class GameWindow extends JFrame {
         }
 
         buttons[CREATE_BUTTON].addActionListener(e -> createDialog.setVisible(true));
+        buttons[INFO_BUTTON].addActionListener(e -> displayVehicleTable(tableShowing ? false : true));
     }
 
     public void Run() {
@@ -121,5 +126,69 @@ public class GameWindow extends JFrame {
 	public void setDriving(int junc_count, int vehi_count) {
         currDriving = new Driving(junc_count, vehi_count);
         roadPanel.repaint();
-	}
+    }
+    
+    private JPanel tablePanel = null;
+    private boolean tableShowing = false;
+    private void displayVehicleTable(boolean doShow) {
+        tableShowing = !tableShowing;
+
+        if (!doShow) {
+            roadPanel.setVisible(true);
+            if (tablePanel != null) {
+                tablePanel.setVisible(false);
+                remove(tablePanel);
+            }
+            repaint();
+            return;
+        }
+
+        if (currDriving == null)
+            return;
+
+        tablePanel = new JPanel();
+        tablePanel.setSize(800, 600);
+        tablePanel.setLayout(null);
+
+        ArrayList<Vehicle> vlist = currDriving.getVehicles();
+        
+        Vector<String> columns = new Vector<String>(5);
+        columns.add("Vehicle #");
+        columns.add("Type");
+        columns.add("Location");
+        columns.add("Time on loc");
+        columns.add("Speed");
+        
+        Vector<Vector<String>> data = new Vector<Vector<String>>(vlist.size());
+        
+        for (Vehicle vehicle : vlist) {
+            Vector<String> row = new Vector<String>(5);
+            
+            row.add(String.valueOf(vehicle.getId()));
+            row.add(String.valueOf(vehicle.getVehicleType()));
+
+            if (vehicle.getCurrentRoutePart() instanceof Junction) {
+                Junction junction = (Junction)vehicle.getCurrentRoutePart();
+                row.add("Junction " + junction.getJunctionName());
+            } else {
+                Road road = (Road)vehicle.getCurrentRoutePart();
+                row.add("Road " + road.getStartJunction().getJunctionName() + "-" + road.getEndJunction().getJunctionName());
+            }
+
+            row.add(String.valueOf(vehicle.getTimeOnCurrentPart()));
+            row.add(String.valueOf(vehicle.getVehicleType().getAverageSpeed()));
+            
+            data.add(row);
+        }
+        JTable table = new JTable(new DefaultTableModel(data, columns));
+        JTableHeader header = table.getTableHeader();
+        header.setBounds(0, 0, 800, 30);
+        table.setBounds(0, 30, 800, 630);
+        tablePanel.add(header);
+        tablePanel.add(table);
+        tablePanel.setVisible(true);
+        roadPanel.setVisible(false);
+        add(tablePanel);
+        repaint();
+    }
 }

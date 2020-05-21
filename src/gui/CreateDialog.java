@@ -2,15 +2,16 @@ package gui;
 
 import javax.swing.*;
 
-public class CreateDialog extends JFrame {
+public class CreateDialog extends JDialog {
     private static final long serialVersionUID = 1L;
 
     public CreateDialog(GameWindow parent) {
-        super("Create road system");
+        super(parent);
 
         setSize(600,300);
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setLayout(null);
+        setTitle("Create road system");
 
         JLabel juncLabel = new JLabel("Number of junctions", SwingConstants.CENTER);
         juncLabel.setBounds(30, 0, 540, 50);
