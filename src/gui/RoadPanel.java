@@ -9,8 +9,10 @@ import utilities.Utilities;
 public class RoadPanel extends JPanel implements Utilities {
     private static final long serialVersionUID = 1L;
     private static final Color[] colors = { Color.BLUE, Color.MAGENTA, Color.ORANGE };
-    Color vehicleColor = null;
-    GameWindow parent;
+
+    private Color[] currentColors = {};
+    private Color vehicleColor = null;
+    private GameWindow parent;
 
     public RoadPanel(GameWindow parent) {
         this.parent = parent;
@@ -65,6 +67,15 @@ public class RoadPanel extends JPanel implements Utilities {
             }
             g.fillOval((int) junction.getX() - 5, (int) junction.getY() - 5, 10, 10);
         }
+
+        int vehicle_count = currDriving.getVehicles().size();
+        if (vehicleColor == null && vehicle_count != currentColors.length) {
+            currentColors = new Color[vehicle_count];
+            for (int i = 0; i < vehicle_count; i++)
+                currentColors[i] = colors[getRandomInt(0, colors.length)];
+        }
+
+        int index = 0;
         /** Draw vehicle sprites */
         for (Vehicle vehicle : currDriving.getVehicles()) {
             int x1, x2, y1, y2;
@@ -73,8 +84,12 @@ public class RoadPanel extends JPanel implements Utilities {
             if (currPart instanceof Junction) {
                 Junction junction = (Junction) currPart;
                 
-                x1 = x2 = (int) junction.getX();
-                y1 = y2 = (int) junction.getY();
+                x1 = (int) junction.getX();
+                y1 = (int) junction.getY();
+                
+                /** FIXME */
+                x2 = x1 - 5;
+                y2 = y1 - 5;
             } else {
                 Road road = (Road) currPart;
                 Junction start = road.getStartJunction();
@@ -85,10 +100,10 @@ public class RoadPanel extends JPanel implements Utilities {
                 double dx = start.getX() - end.getX();
                 double dy = start.getY() - end.getY();
                 double ratio = (vehicle.getTimeFromRouteStart() * Math.min(vehicle.getVehicleType().getAverageSpeed(), road.getMaxSpeed())) / road.getLength();
-                x1 = (int) (start.getX() + dx * ratio);
-                y1 = (int) (start.getY() + dy * ratio);
+                x1 = (int) (start.getX() - dx * ratio);
+                y1 = (int) (start.getY() - dy * ratio);
             }
-            g.setColor((vehicleColor != null) ? vehicleColor : colors[getRandomInt(0, colors.length)]);
+            g.setColor((vehicleColor != null) ? vehicleColor : currentColors[index++]);
             drawRotatedVehicle(g, x1, y1, x2, y2, 10, 4);
         }
     }
