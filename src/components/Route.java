@@ -127,7 +127,7 @@ public class Route implements RouteParts {
     }
 
     @Override
-    public void checkIn(Vehicle vehicle) {
+    public synchronized void checkIn(Vehicle vehicle) {
         vehicle.setTimeFromRouteStart(0);
         System.out.println("- is starting a new " + this + ".");
         this.getFirstPart().checkIn(vehicle);
@@ -135,7 +135,7 @@ public class Route implements RouteParts {
     }
 
     @Override
-    public void checkOut(Vehicle vehicle) {
+    public synchronized void checkOut(Vehicle vehicle) {
         System.out.println(
                 "- has finished the " + this + ". Time spent on the route: " + vehicle.getTimeFromRouteStart());
 

@@ -11,9 +11,10 @@ import utilities.Timer;
  */
 public class Driving implements Timer {
     private Map map;
-    private ArrayList<Vehicle> vehicles;
     private int drivingTime;
     private ArrayList<Timer> allTimedElements;
+    protected ArrayList<Vehicle> vehicles;
+    protected ArrayList<TrafficLights> lights;
 
     /**
      * Constructor
@@ -24,6 +25,7 @@ public class Driving implements Timer {
     public Driving(int junctionsNum, int numOfVehicles) {
 
         vehicles = new ArrayList<Vehicle>();
+        lights = new ArrayList<TrafficLights>();
         allTimedElements = new ArrayList<Timer>();
         drivingTime = 0;
         map = new Map(junctionsNum);
@@ -40,6 +42,7 @@ public class Driving implements Timer {
 
         for (TrafficLights light : map.getLights()) {
             if (light.getTrafficLightsOn()) {
+                lights.add(light);
                 allTimedElements.add(light);
             }
         }

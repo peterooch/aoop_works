@@ -195,7 +195,7 @@ public class Road implements RouteParts {
     }
 
     @Override
-    public void checkIn(Vehicle vehicle) {
+    public synchronized void checkIn(Vehicle vehicle) {
         vehicle.setCurrentRoutePart(this);
         vehicle.setTimeOnCurrentPart(0);
         vehicle.setLastRoad(this);
@@ -210,7 +210,7 @@ public class Road implements RouteParts {
     }
 
     @Override
-    public void checkOut(Vehicle vehicle) {
+    public synchronized void checkOut(Vehicle vehicle) {
         System.out.println(
                 "- has finished " + this + ", time spent on the road: " + vehicle.getTimeOnCurrentPart() + ".");
         addVehicleToWaitingVehicles(vehicle);

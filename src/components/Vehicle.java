@@ -14,14 +14,14 @@ import utilities.VehicleType;
  * @author krsof
  *
  */
-public class Vehicle implements Timer {
+public class Vehicle implements Timer, ThreadedComponent {
     private int id;
     private VehicleType vehicleType;
     private Route currentRoute;
     private RouteParts currentRoutePart;
-    private int timeFromRouteStart;
+    private double timeFromRouteStart;
     private static int objectsCount = 1;
-    private int timeOnCurrentPart;
+    private double timeOnCurrentPart;
     private Road lastRoad;
     private String status;
 
@@ -101,7 +101,7 @@ public class Vehicle implements Timer {
     /**
      * @return the timeFromRouteStart
      */
-    public int getTimeFromRouteStart() {
+    public double getTimeFromRouteStart() {
         return timeFromRouteStart;
     }
 
@@ -115,7 +115,7 @@ public class Vehicle implements Timer {
     /**
      * @return the timeOnCurrentPart
      */
-    public int getTimeOnCurrentPart() {
+    public double getTimeOnCurrentPart() {
         return timeOnCurrentPart;
     }
 
@@ -211,4 +211,48 @@ public class Vehicle implements Timer {
         Vehicle.objectsCount = objectsCount;
     }
 
+    /** ThreadedComponent boilerplate */
+    private final Object monitor = new Object();
+    private boolean doPause = false;
+    private boolean doRun = true;
+
+    @Override
+    public void run() {
+        while (doRun) {
+            try {
+                if (doPause) {
+                    synchronized (monitor) {
+                        monitor.wait();
+                    }
+                }
+
+                timeOnCurrentPart += 0.1;
+                timeFromRouteStart += 0.1;
+                move();
+                Thread.sleep(100);
+
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void pause() {
+        doPause = true;
+    }
+
+    @Override
+    public void resume() {
+        synchronized (monitor) {
+            doPause = false;
+            monitor.notify();
+        }
+    }
+
+    @Override
+    public void stop() {
+        doRun = false;
+    }
 }

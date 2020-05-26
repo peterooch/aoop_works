@@ -11,7 +11,8 @@ import utilities.Point;
 public class GameWindow extends JFrame {
     private static final long serialVersionUID = 1L;
 
-    private Driving currDriving = null;
+    private ThreadedDriving currDriving = null;
+    private Thread drivingThread = null;
     private CreateDialog createDialog;
     private JMenuBar menuBar;
     private RoadPanel roadPanel;
@@ -36,7 +37,11 @@ public class GameWindow extends JFrame {
         /** File menu */
         JMenu file = new JMenu("File");
         JMenuItem exit = new JMenuItem("Exit");
-        exit.addActionListener(e -> dispose());
+        exit.addActionListener(e -> {
+            if (currDriving != null)
+                currDriving.stop();
+            dispose();
+        });
         file.add(exit);
         menuBar.add(file);
 
@@ -106,12 +111,28 @@ public class GameWindow extends JFrame {
         buttons[INFO_BUTTON]   = new JButton("Info");
 
         for (int i = 0; i < BUTTON_COUNT; i++) {
-            buttons[i].setBounds(i * Point.getMaxX() / BUTTON_COUNT, Point.getMaxY() + 10, Point.getMaxX() / BUTTON_COUNT, 50);
+            buttons[i].setBounds(10 + i * (Point.getMaxX() / BUTTON_COUNT), Point.getMaxY() + 10,
+                    Point.getMaxX() / BUTTON_COUNT, 50);
             add(buttons[i]);
         }
 
         buttons[CREATE_BUTTON].addActionListener(e -> createDialog.setVisible(true));
-        /** Add actions for start, stop, resume */
+        buttons[START_BUTTON].addActionListener(e -> {
+            if (drivingThread != null)
+                try {
+                    drivingThread.start();
+                } catch (IllegalThreadStateException exception) {
+                    // Do nothing
+                }
+        });
+        buttons[STOP_BUTTON].addActionListener(e -> {
+            if (currDriving != null)
+                currDriving.pause();
+        });
+        buttons[RESUME_BUTTON].addActionListener(e -> {
+            if (currDriving != null)
+                currDriving.resume();
+        });
         buttons[INFO_BUTTON].addActionListener(e -> displayVehicleTable(tableShowing ? false : true));
     }
 
@@ -124,8 +145,14 @@ public class GameWindow extends JFrame {
 	}
 
 	public void setDriving(int junc_count, int vehi_count) {
-        currDriving = new Driving(junc_count, vehi_count);
+        if (currDriving != null)
+            currDriving.stop();
+
+        currDriving = new ThreadedDriving(roadPanel, junc_count, vehi_count);
+        drivingThread = new Thread(currDriving, "Driving Thread");
+
         roadPanel.repaint();
+
         if (tableShowing)
         {
             /* Refresh in an odd way */
@@ -186,8 +213,7 @@ public class GameWindow extends JFrame {
             
             data.add(row);
         }
-        DefaultTableModel model = new DefaultTableModel(data, columns);
-        JTable table = new JTable(model);
+        JTable table = new JTable(new DefaultTableModel(data, columns));
         table.setDefaultEditor(Object.class, null);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBounds(0, 0, 800, 530);

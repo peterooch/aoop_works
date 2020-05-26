@@ -10,7 +10,7 @@ import utilities.Timer;
  * @author Sophie Krimberg
  *
  */
-public abstract class TrafficLights implements Timer {
+public abstract class TrafficLights implements Timer, ThreadedComponent {
     private int id;
     private final int maxDelay = 6;
     private final int minDelay = 2;
@@ -147,7 +147,7 @@ public abstract class TrafficLights implements Timer {
             changeIndex();
             this.getRoads().get(this.getGreenLightIndex()).setGreenLight(true);// set green light to the next road
             System.out.println("- " + this.getRoads().get(this.getGreenLightIndex()) + ": green light.");// print
-                                                                                                            // message
+                                                                                                         // message
 
         }
     }
@@ -221,5 +221,51 @@ public abstract class TrafficLights implements Timer {
      */
     public int getMinDelay() {
         return minDelay;
+    }
+
+    /** ThreadedComponent boilerplate */
+    private final Object monitor = new Object();
+    private boolean doPause = false;
+    private boolean doRun = true;
+
+    @Override
+    public void run() {
+        if (delay == 0)
+            return;
+
+        while (doRun) {
+            try {
+                if (doPause) {
+                    synchronized (monitor) {
+                        monitor.wait();
+                    }
+                }
+
+                changeLights();
+                Thread.sleep(100 * delay);
+
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void pause() {
+        doPause = true;
+    }
+
+    @Override
+    public void resume() {
+        synchronized (monitor) {
+            doPause = false;
+            monitor.notify();
+        }
+    }
+    
+    @Override
+    public void stop() {
+        doRun = false;
     }
 }

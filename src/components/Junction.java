@@ -171,7 +171,7 @@ public class Junction extends utilities.Point implements RouteParts {
     }
 
     @Override
-    public void checkIn(Vehicle vehicle) {
+    public synchronized void checkIn(Vehicle vehicle) {
         vehicle.setTimeOnCurrentPart(0);
         System.out.println("- has arrived to " + this);
         vehicle.setCurrentRoutePart(this);
@@ -180,7 +180,7 @@ public class Junction extends utilities.Point implements RouteParts {
     }
 
     @Override
-    public void checkOut(Vehicle vehicle) {
+    public synchronized void checkOut(Vehicle vehicle) {
         System.out.println("- has left the " + this + ".");
         vehicle.getLastRoad().removeVehicleFromWaitingVehicles(vehicle);
     }

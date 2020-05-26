@@ -39,5 +39,4 @@ public class SequentialTrafficLights extends TrafficLights {
     public int getIncrement() {
         return increment;
     }
-
 }
