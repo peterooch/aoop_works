@@ -84,26 +84,31 @@ public class RoadPanel extends JPanel implements Utilities {
             if (currPart instanceof Junction) {
                 Junction junction = (Junction) currPart;
                 
-                x1 = (int) junction.getX();
-                y1 = (int) junction.getY();
+                x1 = x2 = (int) junction.getX();
+                y1 = y2 = (int) junction.getY();
                 
-                /** FIXME */
-                x2 = x1 - 5;
-                y2 = y1 - 5;
             } else {
                 Road road = (Road) currPart;
-                Junction start = road.getStartJunction();
-                Junction end = road.getEndJunction();
-                x2 = (int) end.getX();
-                y2 = (int) end.getY();
+                double start_x = road.getStartJunction().getX();
+                double start_y = road.getStartJunction().getY();
+                x2 = (int) road.getEndJunction().getX();
+                y2 = (int) road.getEndJunction().getY();
                 
-                double dx = start.getX() - end.getX();
-                double dy = start.getY() - end.getY();
+                double dx = start_x - x2;
+                double dy = start_y - y2;
                 double ratio = (vehicle.getTimeFromRouteStart() * Math.min(vehicle.getVehicleType().getAverageSpeed(), road.getMaxSpeed())) / road.getLength();
-                x1 = (int) (start.getX() - dx * ratio);
-                y1 = (int) (start.getY() - dy * ratio);
+                x1 = (int) (start_x - dx * ratio);
+                y1 = (int) (start_y - dy * ratio);
+                
+                /** START OF HACK, cover up bugs found in sophie's hw2 solution */
+                if (!checkValue(x1, start_x < x2 ? start_x : x2, start_x > x2 ? start_x : x2))
+                    x1 = x2;
+
+                if (!checkValue(y1, start_y < y2 ? start_y : y2, start_y > y2 ? start_y : y2))
+                    y1 = y2;
+                /** END OF HACK */
             }
-            g.setColor((vehicleColor != null) ? vehicleColor : currentColors[index++]);
+            g.setColor(vehicleColor != null ? vehicleColor : currentColors[index++]);
             drawRotatedVehicle(g, x1, y1, x2, y2, 10, 4);
         }
     }

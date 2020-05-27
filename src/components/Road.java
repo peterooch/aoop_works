@@ -186,7 +186,7 @@ public class Road implements RouteParts {
     public double calcEstimatedTime(Object obj) {
         Vehicle v = (Vehicle) obj;
         int speed = Math.min(maxSpeed, v.getVehicleType().getAverageSpeed());
-        return (int) length / speed;
+        return length / speed;
     }
 
     @Override

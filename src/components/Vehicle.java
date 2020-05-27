@@ -163,8 +163,8 @@ public class Vehicle implements Timer, ThreadedComponent {
 
     @Override
     public void incrementDrivingTime() {
-        timeFromRouteStart++;
-        timeOnCurrentPart++;
+        timeFromRouteStart += 0.1;
+        timeOnCurrentPart += 0.1;
         move();
     }
 
@@ -212,7 +212,6 @@ public class Vehicle implements Timer, ThreadedComponent {
     }
 
     /** ThreadedComponent boilerplate */
-    private final Object monitor = new Object();
     private boolean doPause = false;
     private boolean doRun = true;
 
@@ -221,14 +220,12 @@ public class Vehicle implements Timer, ThreadedComponent {
         while (doRun) {
             try {
                 if (doPause) {
-                    synchronized (monitor) {
-                        monitor.wait();
+                    synchronized (this) {
+                        wait();
                     }
                 }
 
-                timeOnCurrentPart += 0.1;
-                timeFromRouteStart += 0.1;
-                move();
+                incrementDrivingTime();
                 Thread.sleep(100);
 
             } catch (InterruptedException e) {
@@ -245,9 +242,9 @@ public class Vehicle implements Timer, ThreadedComponent {
 
     @Override
     public void resume() {
-        synchronized (monitor) {
+        synchronized (this) {
             doPause = false;
-            monitor.notify();
+            notify();
         }
     }
 

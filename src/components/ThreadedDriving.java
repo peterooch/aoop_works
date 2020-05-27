@@ -14,10 +14,10 @@ public class ThreadedDriving extends Driving implements ThreadedComponent {
 
         components.addAll(vehicles);
         components.addAll(lights);
+        incrementDrivingTime();
     }
 
     /** ThreadedComponent boilerplate */
-    private final Object monitor = new Object();
     private boolean doPause = false;
     private boolean doRun = true;
 
@@ -29,8 +29,8 @@ public class ThreadedDriving extends Driving implements ThreadedComponent {
         while (doRun) {
             try {
                 if (doPause) {
-                    synchronized (monitor) {
-                        monitor.wait();
+                    synchronized (this) {
+                        wait();
                     }
                 }
 
@@ -55,9 +55,9 @@ public class ThreadedDriving extends Driving implements ThreadedComponent {
 
     @Override
     public void resume() {
-        synchronized (monitor) {
+        synchronized (this) {
             doPause = false;
-            monitor.notify();
+            notify();
 
             for (ThreadedComponent component : components)
                 component.resume();

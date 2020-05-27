@@ -95,12 +95,12 @@ public class GameWindow extends JFrame {
         add(roadPanel);
     }
 
-    private final int CREATE_BUTTON = 0;
-    private final int START_BUTTON  = 1;
-    private final int STOP_BUTTON   = 2;
-    private final int RESUME_BUTTON = 3;
-    private final int INFO_BUTTON   = 4;
-    private final int BUTTON_COUNT  = 5;
+    private static final int CREATE_BUTTON = 0;
+    private static final int START_BUTTON  = 1;
+    private static final int STOP_BUTTON   = 2;
+    private static final int RESUME_BUTTON = 3;
+    private static final int INFO_BUTTON   = 4;
+    private static final int BUTTON_COUNT  = 5;
 
     private void setButtons() {
         buttons = new JButton[BUTTON_COUNT];
