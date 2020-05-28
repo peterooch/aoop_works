@@ -11,6 +11,7 @@ import java.util.Random;
  *
  */
 public interface Utilities {
+    Random random = new Random();
     public default void errorMessage(double wrongVal, String variable) {
 
         System.out.print("The value " + wrongVal + " is illegal for" + variable);
@@ -26,16 +27,16 @@ public interface Utilities {
     }
 
     public default double getRandomDouble(double minimum, double maximum) {
-        return Math.random() * ((maximum - minimum) + 1) - minimum;
+        return random.nextDouble() * ((maximum - minimum) + 1) - minimum;
 
     }
 
     public default boolean getRandomBoolean() {
-        return new Random().nextBoolean();
+        return random.nextBoolean();
     }
 
     public default int getRandomInt(int minimum, int maximum) {
-        return new Random().nextInt(maximum - minimum) + minimum;
+        return random.nextInt(maximum - minimum) + minimum;
 
     }
 

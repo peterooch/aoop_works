@@ -9,6 +9,8 @@ import utilities.Timer;
  * 
  * @author Sophie Krimberg
  *
+ * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
+ * @author Asaf Bereby, ID 208058412, Campus Be'er Sheva
  */
 public abstract class TrafficLights implements Timer, ThreadedComponent {
     private int id;
@@ -223,8 +225,10 @@ public abstract class TrafficLights implements Timer, ThreadedComponent {
         return minDelay;
     }
 
-    /** ThreadedComponent boilerplate */
+    /** ThreadedComponent interface code */
+    /** Indicates if the thread to be paused */
     private boolean doPause = false;
+    /** Indicates if the thread to be stopped */
     private boolean doRun = true;
 
     @Override
@@ -244,7 +248,6 @@ public abstract class TrafficLights implements Timer, ThreadedComponent {
                 Thread.sleep(100 * delay);
 
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -262,9 +265,12 @@ public abstract class TrafficLights implements Timer, ThreadedComponent {
             notify();
         }
     }
-    
+
     @Override
     public void stop() {
         doRun = false;
+
+        if (doPause)
+            resume();
     }
 }

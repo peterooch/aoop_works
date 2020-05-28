@@ -11,7 +11,6 @@ public enum VehicleType {
 
     VehicleType(int speed) {
         averageSpeed = speed;
-
     }
 
     public int getAverageSpeed() {

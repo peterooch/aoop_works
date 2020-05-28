@@ -9,10 +9,9 @@ import utilities.VehicleType;
 /**
  * @author Sophie Krimberg
  *
- */
-/**
- * @author krsof
- *
+ * 
+ * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
+ * @author Asaf Bereby, ID 208058412, Campus Be'er Sheva
  */
 public class Vehicle implements Timer, ThreadedComponent {
     private int id;
@@ -211,8 +210,10 @@ public class Vehicle implements Timer, ThreadedComponent {
         Vehicle.objectsCount = objectsCount;
     }
 
-    /** ThreadedComponent boilerplate */
+    /** ThreadedComponent interface code */
+    /** Indicates if the thread to be paused */
     private boolean doPause = false;
+    /** Indicates if the thread to be stopped */
     private boolean doRun = true;
 
     @Override
@@ -229,7 +230,6 @@ public class Vehicle implements Timer, ThreadedComponent {
                 Thread.sleep(100);
 
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -251,5 +251,8 @@ public class Vehicle implements Timer, ThreadedComponent {
     @Override
     public void stop() {
         doRun = false;
+
+        if (doPause)
+            resume();
     }
 }

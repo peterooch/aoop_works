@@ -8,29 +8,44 @@ import javax.swing.table.DefaultTableModel;
 import components.*;
 import utilities.Point;
 
+/**
+ * Road system primary GUI window
+ * 
+ * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
+ * @author Asaf Bereby, ID 208058412, Campus Be'er Sheva
+ */
 public class GameWindow extends JFrame {
     private static final long serialVersionUID = 1L;
 
+    /** Backend simulation primary object */
     private ThreadedDriving currDriving = null;
+    /** Thread made from above object */
     private Thread drivingThread = null;
-    private CreateDialog createDialog;
+    /** Road system creation dialog box */
+    private JDialog createDialog;
+    /** Primary menubar */
     private JMenuBar menuBar;
+    /** Road drawing panel */
     private RoadPanel roadPanel;
+    /** GUI Buttons */
     private JButton[] buttons;
 
+    /** Constructor, initializes and places all the gui components */
     public GameWindow() {
+        /** Set up general window properties */
         super("Road system");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         setSize(Point.getMaxX() + 40, Point.getMaxY() + 130);
 
-        createDialog = new CreateDialog(this);
-
+        /** Set up internal gui components */
+        initCreationDialog();
         setMenu();
         setRoadPanel();
         setButtons();
     }
 
+    /** Sets up the menu bar */
     private void setMenu() {
         menuBar = new JMenuBar();
 
@@ -88,6 +103,7 @@ public class GameWindow extends JFrame {
         setJMenuBar(menuBar);
     }
 
+    /** Creates and places the the road drawing panel */
     private void setRoadPanel() {
         roadPanel = new RoadPanel(this);
         roadPanel.setBounds(10, 0, 800, 600);
@@ -96,19 +112,20 @@ public class GameWindow extends JFrame {
     }
 
     private static final int CREATE_BUTTON = 0;
-    private static final int START_BUTTON  = 1;
-    private static final int STOP_BUTTON   = 2;
+    private static final int START_BUTTON = 1;
+    private static final int PAUSE_BUTTON = 2;
     private static final int RESUME_BUTTON = 3;
-    private static final int INFO_BUTTON   = 4;
-    private static final int BUTTON_COUNT  = 5;
+    private static final int INFO_BUTTON = 4;
+    private static final int BUTTON_COUNT = 5;
 
+    /** Creates and places the GUI buttons */
     private void setButtons() {
         buttons = new JButton[BUTTON_COUNT];
         buttons[CREATE_BUTTON] = new JButton("Create road sytem");
-        buttons[START_BUTTON]  = new JButton("Start");
-        buttons[STOP_BUTTON]   = new JButton("Stop");
+        buttons[START_BUTTON] = new JButton("Start");
+        buttons[PAUSE_BUTTON] = new JButton("Pause");
         buttons[RESUME_BUTTON] = new JButton("Resume");
-        buttons[INFO_BUTTON]   = new JButton("Info");
+        buttons[INFO_BUTTON] = new JButton("Info");
 
         for (int i = 0; i < BUTTON_COUNT; i++) {
             buttons[i].setBounds(10 + i * (Point.getMaxX() / BUTTON_COUNT), Point.getMaxY() + 10,
@@ -116,16 +133,19 @@ public class GameWindow extends JFrame {
             add(buttons[i]);
         }
 
+        /** Set actions on button clicks */
         buttons[CREATE_BUTTON].addActionListener(e -> createDialog.setVisible(true));
         buttons[START_BUTTON].addActionListener(e -> {
-            if (drivingThread != null)
+            /** Do we have a thread to work with? */
+            if (drivingThread != null) {
                 try {
                     drivingThread.start();
                 } catch (IllegalThreadStateException exception) {
-                    // Do nothing
+                    currDriving.resume();
                 }
+            }
         });
-        buttons[STOP_BUTTON].addActionListener(e -> {
+        buttons[PAUSE_BUTTON].addActionListener(e -> {
             if (currDriving != null)
                 currDriving.pause();
         });
@@ -136,33 +156,96 @@ public class GameWindow extends JFrame {
         buttons[INFO_BUTTON].addActionListener(e -> displayVehicleTable(tableShowing ? false : true));
     }
 
+    /** Show the window */
     public void Run() {
         setVisible(true);
     }
 
-	public Driving getDriving() {
-		return currDriving;
-	}
+    /**
+     * Fetch the internal driving object ref used by RoadPanel
+     */
+    public Driving getDriving() {
+        return currDriving;
+    }
 
-	public void setDriving(int junc_count, int vehi_count) {
+    /** Prebuild the dialog box */
+    private void initCreationDialog() {
+        createDialog = new JDialog(this, "Create road system", true);
+
+        createDialog.setSize(600, 300);
+        createDialog.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+        createDialog.setLayout(null);
+
+        /** Dialog component creation and placement */
+        JLabel juncLabel = new JLabel("Number of junctions", SwingConstants.CENTER);
+        juncLabel.setBounds(30, 0, 540, 50);
+        createDialog.add(juncLabel);
+
+        JSlider junctionSlider = new JSlider(JSlider.HORIZONTAL, 3, 20, 11);
+        junctionSlider.setMajorTickSpacing(1);
+        junctionSlider.setBounds(30, 50, 540, 50);
+        junctionSlider.setPaintTicks(true);
+        junctionSlider.setPaintLabels(true);
+        createDialog.add(junctionSlider);
+
+        JLabel vehiLabel = new JLabel("Number of vehicles", SwingConstants.CENTER);
+        vehiLabel.setBounds(20, 100, 540, 50);
+        createDialog.add(vehiLabel);
+
+        JSlider vehicleSlider = new JSlider(JSlider.HORIZONTAL, 0, 50, 25);
+        vehicleSlider.setMajorTickSpacing(5);
+        vehicleSlider.setBounds(30, 150, 540, 50);
+        vehicleSlider.setPaintTicks(true);
+        vehicleSlider.setPaintLabels(true);
+        createDialog.add(vehicleSlider);
+
+        JButton okButton = new JButton("OK");
+        okButton.addActionListener(e -> {
+            setDriving(junctionSlider.getValue(), vehicleSlider.getValue());
+            createDialog.setVisible(false);
+        });
+        okButton.setBounds(0, 200, 300, 50);
+        createDialog.add(okButton);
+
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(e -> createDialog.setVisible(false));
+        cancelButton.setBounds(300, 200, 300, 50);
+        createDialog.add(cancelButton);
+    }
+
+    /**
+     * Create/Update the current driving object according to the info from the road
+     * system creation dialog
+     * 
+     * @param junc_count count of juncions
+     * @param vehi_count count of vehicles
+     */
+    private void setDriving(int junc_count, int vehi_count) {
+        /** Stop all current threads */
         if (currDriving != null)
             currDriving.stop();
 
+        /** Create relevant objects */
         currDriving = new ThreadedDriving(roadPanel, junc_count, vehi_count);
         drivingThread = new Thread(currDriving, "Driving Thread");
-
+        /** Redraw road panel to reflect changes */
         roadPanel.repaint();
-
-        if (tableShowing)
-        {
+        /** If the table is being shown, update it too */
+        if (tableShowing) {
             /* Refresh in an odd way */
             displayVehicleTable(false);
             displayVehicleTable(true);
         }
     }
-    
+
     private JPanel tablePanel = null;
     private boolean tableShowing = false;
+
+    /**
+     * Show a table detailing all the info on currently exisiting vehicles
+     * 
+     * @param doShow show/hide the table
+     */
     private void displayVehicleTable(boolean doShow) {
         tableShowing = doShow;
 
@@ -184,33 +267,35 @@ public class GameWindow extends JFrame {
         tablePanel.setLayout(null);
 
         ArrayList<Vehicle> vlist = currDriving.getVehicles();
-        
+
         Vector<String> columns = new Vector<String>(5);
         columns.add("Vehicle #");
         columns.add("Type");
         columns.add("Location");
         columns.add("Time on loc");
         columns.add("Speed");
-        
+
         Vector<Vector<String>> data = new Vector<Vector<String>>(vlist.size());
-        
+
         for (Vehicle vehicle : vlist) {
             Vector<String> row = new Vector<String>(5);
-            
+
             row.add(String.valueOf(vehicle.getId()));
             row.add(String.valueOf(vehicle.getVehicleType()));
 
             if (vehicle.getCurrentRoutePart() instanceof Junction) {
-                Junction junction = (Junction)vehicle.getCurrentRoutePart();
+                Junction junction = (Junction) vehicle.getCurrentRoutePart();
                 row.add("Junction " + junction.getJunctionName());
             } else {
-                Road road = (Road)vehicle.getCurrentRoutePart();
-                row.add("Road " + road.getStartJunction().getJunctionName() + "-" + road.getEndJunction().getJunctionName());
+                Road road = (Road) vehicle.getCurrentRoutePart();
+                row.add("Road " + road.getStartJunction().getJunctionName() + "-"
+                        + road.getEndJunction().getJunctionName());
             }
 
             row.add(String.valueOf(vehicle.getTimeOnCurrentPart()));
-            row.add(String.valueOf(Math.min(vehicle.getVehicleType().getAverageSpeed(), vehicle.getLastRoad().getMaxSpeed())));
-            
+            row.add(String.valueOf(
+                    Math.min(vehicle.getVehicleType().getAverageSpeed(), vehicle.getLastRoad().getMaxSpeed())));
+
             data.add(row);
         }
         JTable table = new JTable(new DefaultTableModel(data, columns));

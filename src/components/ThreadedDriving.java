@@ -3,6 +3,12 @@ package components;
 import java.util.Vector;
 import gui.RoadPanel;
 
+/**
+ * Threaded extension of the Driving class
+ * 
+ * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
+ * @author Asaf Bereby, ID 208058412, Campus Be'er Sheva
+ */
 public class ThreadedDriving extends Driving implements ThreadedComponent {
     private RoadPanel roadPanel;
     private Vector<ThreadedComponent> components;
@@ -14,11 +20,14 @@ public class ThreadedDriving extends Driving implements ThreadedComponent {
 
         components.addAll(vehicles);
         components.addAll(lights);
+        /** do one iteration to juggle vehicles into their roads */
         incrementDrivingTime();
     }
 
-    /** ThreadedComponent boilerplate */
+    /** ThreadedComponent interface code */
+    /** Indicates if the thread to be paused */
     private boolean doPause = false;
+    /** Indicates if the thread to be stopped */
     private boolean doRun = true;
 
     @Override
@@ -38,12 +47,14 @@ public class ThreadedDriving extends Driving implements ThreadedComponent {
                 Thread.sleep(100);
 
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
     }
 
+    /**
+     *  Pauses the thread and the threads created for traffic lights and vehicles
+     */
     @Override
     public void pause() {
         synchronized (this) {
@@ -53,6 +64,9 @@ public class ThreadedDriving extends Driving implements ThreadedComponent {
         }
     }
 
+    /**
+     * Resumes the thread and the threads created for traffic lights and vehicles
+     */
     @Override
     public void resume() {
         synchronized (this) {
@@ -64,9 +78,15 @@ public class ThreadedDriving extends Driving implements ThreadedComponent {
         }
     }
 
+    /** 
+     * Stops the thread and the threads created for traffic lights and vehicles
+     */
     @Override
     public void stop() {
         doRun = false;
+
+        if (doPause)
+            resume();
 
         for (ThreadedComponent component : components)
             component.stop();
