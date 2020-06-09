@@ -1,6 +1,8 @@
 package components;
 
 import java.util.ArrayList;
+
+import components.factories.JFactory;
 import utilities.Utilities;
 
 /**
@@ -20,25 +22,26 @@ public class Map implements Utilities {
      * @param junctionsNum represents the quantity of junctions
      */
     public Map(int junctionsNum) {
-        junctions = new ArrayList<Junction>();
-        roads = new ArrayList<Road>();
-        lights = new ArrayList<TrafficLights>();
+        this();
         System.out.println("\n================= CREATING JUNCTIONS=================");
         // create lighted and non-lighted junctions
         for (int i = 0; i < junctionsNum; i++) {
-            if (getRandomBoolean()) {
-                junctions.add(new Junction());
-            } else {
-                LightedJunction junc = new LightedJunction();
-                junctions.add(junc);
-                lights.add(junc.getLights());
-            }
+            Junction junction = JFactory.getJunction("city");
+            junctions.add(junction);
+
+            if (junction instanceof LightedJunction)
+                    lights.add(((LightedJunction)junction).getLights());
         }
 
         setAllRoads();
         turnLightsOn();
         System.out.println("\n================= GAME MAP HAS BEEN CREATED =================\n");
-
+    }
+    /** Basic constructor for Builders */
+    public Map() {
+        junctions = new ArrayList<Junction>();
+        roads = new ArrayList<Road>();
+        lights = new ArrayList<TrafficLights>();
     }
 
     /**

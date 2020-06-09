@@ -3,12 +3,15 @@
  */
 package components;
 
+import java.util.HashMap;
+import java.util.Random;
+import javax.swing.event.EventListenerList;
+
 import utilities.Timer;
 import utilities.VehicleType;
 
 /**
  * @author Sophie Krimberg
- *
  * 
  * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
  * @author Asaf Bereby, ID 208058412, Campus Be'er Sheva
@@ -23,24 +26,39 @@ public class Vehicle implements Timer, ThreadedComponent {
     private double timeOnCurrentPart;
     private Road lastRoad;
     private String status;
+    private EventListenerList listeners;
 
+    private static HashMap<Integer, Vehicle> allVehicles = new HashMap<Integer, Vehicle>();
     /**
      * Random Constructor
      * 
      * @param currentLocation
      */
-    public Vehicle(Road currentLocation) {
-
+    public Vehicle(Road currentLocation, VehicleType type) {
         id = objectsCount++;
-        vehicleType = currentLocation.getVehicleTypes()[getRandomInt(0, currentLocation.getVehicleTypes().length - 1)];
+        vehicleType = type;
         System.out.println();
         successMessage(this.toString());
         currentRoute = new Route(currentLocation, this); // creates a new route for the vehicle and checks it in
         lastRoad = currentLocation;
         status = null;
+        listeners = new EventListenerList();
 
+        allVehicles.put(id, this);
     }
 
+    /** Factory constructor, do not use AS IS! */
+    public Vehicle(Road currentLocation) {
+        this(currentLocation,
+             currentLocation.getVehicleTypes()[new Random().nextInt(currentLocation.getVehicleTypes().length - 1)]);
+    }
+    /** Prototype constructor (?) */
+    public Vehicle(Road currentLocation, int prototypeID) {
+        this(currentLocation, allVehicles.get(prototypeID).vehicleType);
+
+        for (VehicleListener listener : allVehicles.get(prototypeID).listeners.getListeners(VehicleListener.class))
+            listeners.add(VehicleListener.class, listener);
+    }
     /**
      * @return the id
      */
@@ -208,6 +226,14 @@ public class Vehicle implements Timer, ThreadedComponent {
      */
     public static void setObjectsCount(int objectsCount) {
         Vehicle.objectsCount = objectsCount;
+    }
+
+    public void addListener(VehicleListener listener) {
+        listeners.add(VehicleListener.class, listener);
+    }
+
+    public void removeListener(VehicleListener listener) {
+        listeners.remove(VehicleListener.class, listener);
     }
 
     /** ThreadedComponent interface code */

@@ -1,6 +1,8 @@
 package components;
 
 import java.util.ArrayList;
+
+import components.builders.Builder;
 import utilities.Timer;
 
 /**
@@ -14,7 +16,6 @@ public class Driving implements Timer {
     private int drivingTime;
     private ArrayList<Timer> allTimedElements;
     protected ArrayList<Vehicle> vehicles;
-    protected ArrayList<TrafficLights> lights;
 
     /**
      * Constructor
@@ -23,12 +24,19 @@ public class Driving implements Timer {
      * @param numOfVehicles quantity of vehicles
      */
     public Driving(int junctionsNum, int numOfVehicles) {
+        internalInit(new Map(junctionsNum), numOfVehicles);
+    }
 
-        vehicles = new ArrayList<Vehicle>();
-        lights = new ArrayList<TrafficLights>();
+    public Driving(Builder builder) {
+        internalInit(null, 0);
+        map = builder.buildMap(this);
+	}
+
+    private void internalInit(Map map, int numOfVehicles) {
+        vehicles = new ArrayList<Vehicle>(numOfVehicles);
         allTimedElements = new ArrayList<Timer>();
         drivingTime = 0;
-        map = new Map(junctionsNum);
+        this.map = map;
 
         System.out.println("\n================= CREATING VEHICLES =================");
 
@@ -42,13 +50,11 @@ public class Driving implements Timer {
 
         for (TrafficLights light : map.getLights()) {
             if (light.getTrafficLightsOn()) {
-                lights.add(light);
                 allTimedElements.add(light);
             }
         }
     }
-
-    /**
+	/**
      * @return the map
      */
     public Map getMap() {

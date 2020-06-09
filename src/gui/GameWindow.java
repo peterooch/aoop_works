@@ -6,6 +6,7 @@ import java.util.Vector;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import components.*;
+import components.builders.*;
 import utilities.Point;
 
 /**
@@ -23,6 +24,8 @@ public class GameWindow extends JFrame {
     private Thread drivingThread = null;
     /** Road system creation dialog box */
     private JDialog createDialog;
+    /** Builder road system creation dialog box */
+    private JDialog builderDialog;
     /** Primary menubar */
     private JMenuBar menuBar;
     /** Road drawing panel */
@@ -40,6 +43,8 @@ public class GameWindow extends JFrame {
 
         /** Set up internal gui components */
         initCreationDialog();
+        initBuilderDialog();
+
         setMenu();
         setRoadPanel();
         setButtons();
@@ -57,6 +62,11 @@ public class GameWindow extends JFrame {
                 currDriving.stop();
             dispose();
         });
+        JMenuItem buildMap = new JMenuItem("Build map with Builder");
+        buildMap.addActionListener(e -> {
+            builderDialog.setVisible(true);
+        });
+        file.add(buildMap);
         file.add(exit);
         menuBar.add(file);
 
@@ -201,7 +211,7 @@ public class GameWindow extends JFrame {
 
         JButton okButton = new JButton("OK");
         okButton.addActionListener(e -> {
-            setDriving(junctionSlider.getValue(), vehicleSlider.getValue());
+            setDriving(junctionSlider.getValue(), vehicleSlider.getValue(), null);
             createDialog.setVisible(false);
         });
         okButton.setBounds(0, 200, 300, 50);
@@ -212,6 +222,29 @@ public class GameWindow extends JFrame {
         cancelButton.setBounds(300, 200, 300, 50);
         createDialog.add(cancelButton);
     }
+    
+    private void initBuilderDialog() {
+        builderDialog = new JDialog(this, "Create map using builder", true);
+        builderDialog.setSize(250, 150);
+        builderDialog.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+        builderDialog.setLayout(null);
+
+        JButton cityButton = new JButton("Build map with CityBuilder");
+        cityButton.addActionListener(e -> {
+            setDriving(0, 0, new CityBuilder());
+            builderDialog.setVisible(false);
+        });
+        cityButton.setBounds(10, 10, 220, 45);
+        builderDialog.add(cityButton);
+
+        JButton countryButton = new JButton("Build map with CountryBuilder");
+        countryButton.addActionListener(e -> {
+            setDriving(0, 0, new CountryBuilder());
+            builderDialog.setVisible(false);
+        });
+        countryButton.setBounds(10, 60, 220, 45);
+        builderDialog.add(countryButton);
+    }
 
     /**
      * Create/Update the current driving object according to the info from the road
@@ -219,14 +252,19 @@ public class GameWindow extends JFrame {
      * 
      * @param junc_count count of juncions
      * @param vehi_count count of vehicles
+     * @param builder map builder, can be null
      */
-    private void setDriving(int junc_count, int vehi_count) {
+    private void setDriving(int junc_count, int vehi_count, Builder builder) {
         /** Stop all current threads */
         if (currDriving != null)
             currDriving.stop();
 
         /** Create relevant objects */
-        currDriving = new ThreadedDriving(roadPanel, junc_count, vehi_count);
+        if (builder == null)
+            currDriving = new ThreadedDriving(roadPanel, junc_count, vehi_count);
+        else
+            currDriving = new ThreadedDriving(roadPanel, builder);
+
         drivingThread = new Thread(currDriving, "Driving Thread");
         /** Redraw road panel to reflect changes */
         roadPanel.repaint();

@@ -1,6 +1,8 @@
 package components;
 
 import java.util.Vector;
+
+import components.builders.Builder;
 import gui.RoadPanel;
 
 /**
@@ -15,15 +17,23 @@ public class ThreadedDriving extends Driving implements ThreadedComponent {
 
     public ThreadedDriving(RoadPanel panel, int junctionsNum, int numOfVehicles) {
         super(junctionsNum, numOfVehicles);
+        internalInit(panel);
+    }
+
+    public ThreadedDriving(RoadPanel panel, Builder builder) {
+        super(builder);
+        internalInit(panel);
+    }
+
+    private void internalInit(RoadPanel panel) {
         roadPanel = panel;
-        components = new Vector<ThreadedComponent>(vehicles.size() + lights.size());
+        components = new Vector<ThreadedComponent>(vehicles.size() + getMap().getLights().size());
 
         components.addAll(vehicles);
-        components.addAll(lights);
+        components.addAll(getMap().getLights());
         /** do one iteration to juggle vehicles into their roads */
         incrementDrivingTime();
     }
-
     /** ThreadedComponent interface code */
     /** Indicates if the thread to be paused */
     private boolean doPause = false;
