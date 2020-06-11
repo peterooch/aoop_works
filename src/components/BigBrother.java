@@ -1,5 +1,7 @@
 package components;
 
+import java.time.LocalTime;
+
 public class BigBrother implements VehicleListener {
     /************************* SINGLETON CODE ***********************/
     /** Class Instance */
@@ -30,6 +32,9 @@ public class BigBrother implements VehicleListener {
 
     @Override
     public void notifyJunctionArrival(Vehicle vehicle) {
-        
+        double estimatedSpeed = vehicle.getLastRoad().getLength() / vehicle.getTimeOnCurrentPart();
+
+        if (estimatedSpeed > vehicle.getLastRoad().getMaxSpeed())
+            moked.writeReport(vehicle.getId(), LocalTime.now());
     }
 }

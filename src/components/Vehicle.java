@@ -27,6 +27,7 @@ public class Vehicle implements Timer, ThreadedComponent {
     private Road lastRoad;
     private String status;
     private EventListenerList listeners;
+    private double speed = -1;
 
     private static HashMap<Integer, Vehicle> allVehicles = new HashMap<Integer, Vehicle>();
     /**
@@ -47,7 +48,6 @@ public class Vehicle implements Timer, ThreadedComponent {
         allVehicles.put(id, this);
     }
 
-    /** Factory constructor, do not use AS IS! */
     public Vehicle(Road currentLocation) {
         this(currentLocation,
              currentLocation.getVehicleTypes()[new Random().nextInt(currentLocation.getVehicleTypes().length - 1)]);
@@ -192,6 +192,12 @@ public class Vehicle implements Timer, ThreadedComponent {
     public void move() {
         if (currentRoutePart.canLeave(this)) {
             currentRoutePart.checkOut(this);
+
+            if (currentRoutePart instanceof Road) {
+                for (VehicleListener listener : listeners.getListeners(VehicleListener.class))
+                    listener.notifyJunctionArrival(this);
+            }
+
             currentRoute.findNextPart(this).checkIn(this);
         } else {
             currentRoutePart.stayOnCurrentPart(this);
@@ -280,5 +286,13 @@ public class Vehicle implements Timer, ThreadedComponent {
 
         if (doPause)
             resume();
+    }
+
+	public double getSpeed() {
+        return (speed < 0) ? (double)Math.min(lastRoad.getMaxSpeed(), vehicleType.getAverageSpeed()) : speed;
+    }
+    
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 }

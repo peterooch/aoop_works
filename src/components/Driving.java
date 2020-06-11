@@ -30,6 +30,18 @@ public class Driving implements Timer {
     public Driving(Builder builder) {
         internalInit(null, 0);
         map = builder.buildMap(this);
+        
+        /*
+        // this step is skipped in internalInit 
+        for (Junction junction : map.getJunctions()) {
+            if (junction instanceof LightedJunction) {
+                TrafficLights lights =  ((LightedJunction)junction).getLights();
+                map.getLights().add(lights);
+                allTimedElements.add(lights);
+            }
+        }
+        map.turnLightsOn();
+        */
 	}
 
     private void internalInit(Map map, int numOfVehicles) {
@@ -47,6 +59,9 @@ public class Driving implements Timer {
         }
 
         allTimedElements.addAll(vehicles);
+
+        if (map == null)
+            return;
 
         for (TrafficLights light : map.getLights()) {
             if (light.getTrafficLightsOn()) {

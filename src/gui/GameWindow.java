@@ -1,10 +1,11 @@
 package gui;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Vector;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
+import java.util.Vector;
+
 import components.*;
 import components.builders.*;
 import utilities.Point;
@@ -26,6 +27,8 @@ public class GameWindow extends JFrame {
     private JDialog createDialog;
     /** Builder road system creation dialog box */
     private JDialog builderDialog;
+    /** Car cloning dialog */
+    private JDialog cloneCarDialog;
     /** Primary menubar */
     private JMenuBar menuBar;
     /** Road drawing panel */
@@ -44,6 +47,7 @@ public class GameWindow extends JFrame {
         /** Set up internal gui components */
         initCreationDialog();
         initBuilderDialog();
+        initCloneCarDialog();
 
         setMenu();
         setRoadPanel();
@@ -55,7 +59,7 @@ public class GameWindow extends JFrame {
         menuBar = new JMenuBar();
 
         /** File menu */
-        JMenu file = new JMenu("File");
+        JMenu file = new JMenu("File (<- HW4 OPTIONS)");
         JMenuItem exit = new JMenuItem("Exit");
         exit.addActionListener(e -> {
             if (currDriving != null)
@@ -66,7 +70,13 @@ public class GameWindow extends JFrame {
         buildMap.addActionListener(e -> {
             builderDialog.setVisible(true);
         });
+        JMenuItem cloneCar = new JMenuItem("Clone a vehicle");
+        cloneCar.addActionListener(e -> {
+            if (currDriving != null)
+                cloneCarDialog.setVisible(true);
+        });
         file.add(buildMap);
+        file.add(cloneCar);
         file.add(exit);
         menuBar.add(file);
 
@@ -244,6 +254,33 @@ public class GameWindow extends JFrame {
         });
         countryButton.setBounds(10, 60, 220, 45);
         builderDialog.add(countryButton);
+    }
+    
+    private void initCloneCarDialog() {
+        cloneCarDialog = new JDialog(this, "Clone a vehicle", true);
+        cloneCarDialog.setSize(310, 80);
+        cloneCarDialog.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+        cloneCarDialog.setLayout(null);
+
+        JLabel identLabel = new JLabel("Vehicle #");
+        identLabel.setBounds(10, 10, 70, 20);
+        cloneCarDialog.add(identLabel);
+
+        JTextField idField = new JTextField();
+        idField.setBounds(80, 10, 80, 20);
+        cloneCarDialog.add(idField);
+
+        JButton cloneButton = new JButton("Clone Vehicle");
+        cloneButton.setBounds(160, 10, 120, 20);
+        cloneButton.addActionListener(e -> {
+            try {
+                currDriving.addVehicle(Integer.parseInt(idField.getText()));
+                cloneCarDialog.setVisible(false);
+            } catch (NumberFormatException exception) {
+                // Do nothing
+            }
+        });
+        cloneCarDialog.add(cloneButton);
     }
 
     /**

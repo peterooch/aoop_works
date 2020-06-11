@@ -245,7 +245,7 @@ public class Road implements RouteParts {
 
     @Override
     public boolean canLeave(Vehicle vehicle) {
-        if (calcEstimatedTime(vehicle) - vehicle.getTimeOnCurrentPart() > 0) {
+        if (vehicle.getTimeOnCurrentPart() * vehicle.getSpeed() <= length) {
             vehicle.setStatus(new String("is still moving on "));
             return false;
         }

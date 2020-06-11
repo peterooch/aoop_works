@@ -21,12 +21,17 @@ public class CountryBuilder implements Builder, Utilities {
         Map map = new Map();
 
         // Allocate junctions
-        for (int i = 0; i < 6; i++)
-            map.getJunctions().add(JFactory.getJunction("country"));
-        
+        for (int i = 0; i < 6; i++) {
+            Junction junction = JFactory.getJunction("country");
+            map.getJunctions().add(junction);
+
+            if (junction instanceof LightedJunction)
+                map.getLights().add(((LightedJunction)junction).getLights());
+        }
+
         ArrayList<Road> roads = new ArrayList<Road>();
         for (int i = 0; i < 6; i++) {
-            ArrayList<Integer> positions = getRandomIntArray(0, 5, 4);
+            ArrayList<Integer> positions = getRandomIntArray(0, 5, getRandomInt(2, 5));
 
             for (Integer j : positions) {
                 if (j.intValue() == i)
@@ -44,7 +49,7 @@ public class CountryBuilder implements Builder, Utilities {
             driving.getVehicles().add(vehicle);
             driving.getAllTimedElements().add(vehicle);
         }
+        map.turnLightsOn();
         return map;
     }
-    
 }

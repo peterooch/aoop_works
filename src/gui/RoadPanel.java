@@ -120,8 +120,7 @@ public class RoadPanel extends JPanel implements Utilities {
 
                 double dx = start_x - x2;
                 double dy = start_y - y2;
-                double ratio = (vehicle.getTimeFromRouteStart()
-                        * Math.min(vehicle.getVehicleType().getAverageSpeed(), road.getMaxSpeed())) / road.getLength();
+                double ratio = (vehicle.getTimeFromRouteStart() * vehicle.getSpeed()) / road.getLength();
                 x1 = (int) (start_x - dx * ratio);
                 y1 = (int) (start_y - dy * ratio);
 

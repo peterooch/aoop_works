@@ -29,10 +29,26 @@ public class ThreadedDriving extends Driving implements ThreadedComponent {
         roadPanel = panel;
         components = new Vector<ThreadedComponent>(vehicles.size() + getMap().getLights().size());
 
+        for (Vehicle vehicle : vehicles)
+            vehicle.addListener(BigBrother.getInst());
+
         components.addAll(vehicles);
         components.addAll(getMap().getLights());
         /** do one iteration to juggle vehicles into their roads */
         incrementDrivingTime();
+    }
+
+    public void addVehicle(int vehicleID) {
+        Vehicle vehicle = new Vehicle(getMap().getRoads().get(getRandomInt(0, getMap().getRoads().size())), vehicleID);
+        
+        vehicle.addListener(BigBrother.getInst());
+        vehicles.add(vehicle);
+        components.add(vehicle);
+
+        new Thread(vehicle, vehicle.toString()).start();
+        
+        if (doPause)
+            vehicle.pause();
     }
     /** ThreadedComponent interface code */
     /** Indicates if the thread to be paused */

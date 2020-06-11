@@ -23,6 +23,7 @@ public class CityBuilder implements Builder, Utilities {
             driving.getVehicles().add(vehicle);
             driving.getAllTimedElements().add(vehicle);
         }
+        map.turnLightsOn();
         return map;
     }
 }

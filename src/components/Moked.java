@@ -23,11 +23,7 @@ public class Moked {
         reports = new HashMap<>();
     }
 
-    public void writeReport(int vehicleID, int legalSpeed, int reportSpeed, LocalTime time) {
-        /** Sanity check */
-        if (reportSpeed <= legalSpeed)
-            return;
-
+    public void writeReport(int vehicleID, LocalTime time) {
         lock.writeLock().lock();
         try {
             FileWriter writer = new FileWriter(file);
