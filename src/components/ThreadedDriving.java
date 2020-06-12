@@ -39,14 +39,18 @@ public class ThreadedDriving extends Driving implements ThreadedComponent {
     }
 
     public void addVehicle(int vehicleID) {
-        Vehicle vehicle = new Vehicle(getMap().getRoads().get(getRandomInt(0, getMap().getRoads().size())), vehicleID);
+        Vehicle vehicle;
+        try {
+            vehicle = new Vehicle(getMap().getRoads().get(getRandomInt(0, getMap().getRoads().size())), vehicleID);
+        } catch (Exception e) {
+            return;
+        }
         
-        vehicle.addListener(BigBrother.getInst());
         vehicles.add(vehicle);
         components.add(vehicle);
 
         new Thread(vehicle, vehicle.toString()).start();
-        
+
         if (doPause)
             vehicle.pause();
     }

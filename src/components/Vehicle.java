@@ -31,7 +31,7 @@ public class Vehicle implements Timer, ThreadedComponent {
 
     private static HashMap<Integer, Vehicle> allVehicles = new HashMap<Integer, Vehicle>();
     /**
-     * Random Constructor
+     * Primary consturctor
      * 
      * @param currentLocation
      */
@@ -44,15 +44,17 @@ public class Vehicle implements Timer, ThreadedComponent {
         lastRoad = currentLocation;
         status = null;
         listeners = new EventListenerList();
-
         allVehicles.put(id, this);
     }
 
+    /**
+     * Overloaded constructor
+     */
     public Vehicle(Road currentLocation) {
         this(currentLocation,
              currentLocation.getVehicleTypes()[new Random().nextInt(currentLocation.getVehicleTypes().length - 1)]);
     }
-    /** Prototype constructor (?) */
+    /** Prototype constructor */
     public Vehicle(Road currentLocation, int prototypeID) {
         this(currentLocation, allVehicles.get(prototypeID).vehicleType);
 
