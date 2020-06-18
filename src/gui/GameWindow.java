@@ -368,8 +368,7 @@ public class GameWindow extends JFrame {
             }
 
             row.add(String.valueOf(vehicle.getTimeOnCurrentPart()));
-            row.add(String.valueOf(
-                    Math.min(vehicle.getVehicleType().getAverageSpeed(), vehicle.getLastRoad().getMaxSpeed())));
+            row.add(String.valueOf(vehicle.getSpeed()));
 
             data.add(row);
         }

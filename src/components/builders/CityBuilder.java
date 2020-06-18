@@ -20,6 +20,10 @@ public class CityBuilder implements Builder, Utilities {
         for (int i = 0; i < 15; i++) {
             Road road = map.getRoads().get(getRandomInt(0, map.getRoads().size()));
             Vehicle vehicle = new Vehicle(road, prototypes[getRandomInt(0, prototypes.length)]);
+            
+            if (vehicle.getSpeedRatio() >= 1)
+                vehicle.setSpeedRatio(getRandomDouble(1, 1.3));
+
             driving.getVehicles().add(vehicle);
             driving.getAllTimedElements().add(vehicle);
         }

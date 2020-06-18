@@ -27,7 +27,7 @@ public class Vehicle implements Timer, ThreadedComponent {
     private Road lastRoad;
     private String status;
     private EventListenerList listeners;
-    private double speed = -1;
+    private double speedRatio = 1;
 
     private static HashMap<Integer, Vehicle> allVehicles = new HashMap<Integer, Vehicle>();
     /**
@@ -44,6 +44,9 @@ public class Vehicle implements Timer, ThreadedComponent {
         lastRoad = currentLocation;
         status = null;
         listeners = new EventListenerList();
+        if (getRandomBoolean())
+            speedRatio = getRandomDouble(1, 1.5);
+
         allVehicles.put(id, this);
     }
 
@@ -209,7 +212,7 @@ public class Vehicle implements Timer, ThreadedComponent {
     @Override
     public String toString() {
         return new String("Vehicle " + id + ": " + getVehicleType().name() + ", average speed: "
-                + getVehicleType().getAverageSpeed());
+                + getSpeed());
     }
 
     @Override
@@ -267,6 +270,8 @@ public class Vehicle implements Timer, ThreadedComponent {
                 e.printStackTrace();
             }
         }
+        Moked moked = BigBrother.getInst().getMoked();
+        moked.confirmReports(id, moked.readReports(id));
     }
 
     @Override
@@ -291,10 +296,21 @@ public class Vehicle implements Timer, ThreadedComponent {
     }
 
 	public double getSpeed() {
-        return (speed < 0) ? (double)Math.min(lastRoad.getMaxSpeed(), vehicleType.getAverageSpeed()) : speed;
+        double speed;
+        if (lastRoad != null)
+            speed = (double)Math.min(lastRoad.getMaxSpeed(), vehicleType.getAverageSpeed());
+        else 
+            speed = (double)vehicleType.getAverageSpeed();
+
+        return speed * speedRatio;
     }
-    
-    public void setSpeed(int speed) {
-        this.speed = speed;
+
+    public void setSpeedRatio(double ratio) {
+        if (ratio >= 1)
+            speedRatio = ratio;
     }
+
+	public double getSpeedRatio() {
+		return speedRatio;
+	}
 }

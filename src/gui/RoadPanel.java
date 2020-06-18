@@ -59,9 +59,7 @@ public class RoadPanel extends JPanel implements Utilities {
             if (junction instanceof LightedJunction) {
                 LightedJunction lJunction = (LightedJunction) junction;
                 if (lJunction.getLights().getTrafficLightsOn()) {
-                    Junction dest = lJunction.getExitingRoads().get(lJunction.getLights().getGreenLightIndex())
-                            .getEndJunction();
-
+                    Junction dest = lJunction.getExitingRoads().get(lJunction.getLights().getGreenLightIndex()).getEndJunction();
                     int x1 = (int) lJunction.getX();
                     int y1 = (int) lJunction.getY();
                     double tetha = Math.atan2(y1 - dest.getY(), x1 - dest.getX());

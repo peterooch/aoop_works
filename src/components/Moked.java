@@ -1,23 +1,43 @@
 package components;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.*;
 import java.time.LocalTime;
 import java.util.HashMap;
-import java.util.Scanner;
 import java.util.Vector;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+// Helper class to make the HashMap best used
+class Report {
+    public int id, vehicleid;
+    public LocalTime time;
+    public boolean confirmed = false;
+
+    public Report(int id, int vehicleid, LocalTime time) {
+        this.id = id;
+        this.vehicleid = vehicleid;
+        this.time = time;
+    }
+
+    public String toString() {
+        return "ID: " + id + ", Time:" + time + ", Vehicle ID: " + id;
+    }
+}
+
 public class Moked {
     private ReentrantReadWriteLock lock;
-    private File file;
+    private Path file;
     private int currentReport;
-    private HashMap<Integer, Boolean> reports;
+    private HashMap<Integer, Report> reports;
 
     public Moked(String fileLocation) {
-        file = new File(fileLocation);
+        file = Paths.get(fileLocation);
+        try {
+            Files.deleteIfExists(file);
+            Files.createFile(file);
+        } catch (IOException io) {
+            // Do something
+        }
         lock = new ReentrantReadWriteLock();
         currentReport = 0;
         reports = new HashMap<>();
@@ -25,51 +45,58 @@ public class Moked {
 
     public void writeReport(int vehicleID, LocalTime time) {
         lock.writeLock().lock();
+        Report report = new Report(++currentReport, vehicleID, time);
+        reports.put(currentReport, report);
         try {
-            FileWriter writer = new FileWriter(file);
-            writer.write(++currentReport + " " + time.toString() + " " + vehicleID + "\n");
-            writer.close();
+            Files.write(file, report.toString().getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        reports.put(currentReport, false);
         lock.writeLock().unlock();
     }
 
-    public String[] readReports(int vehicleID) {
-        Vector<String> reports = new Vector<String>();
+    public int[] readReports(int vehicleID) {
+        Vector<Integer> reportIDs = new Vector<Integer>();
 
         lock.readLock().lock();
-        try {
-            Scanner reader = new Scanner(file);
-
-            while (reader.hasNextLine()) {
-                String line = reader.nextLine();
-                if (String.valueOf(vehicleID).equals(line.split(" ")[2]));
-                    reports.add(line);
-            }
-
-            reader.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        for (Report report : reports.values()) {
+            if (report.vehicleid == vehicleID && report.confirmed == false)
+                reportIDs.add(report.id);
         }
         lock.readLock().unlock();
 
-        String[] result = new String[reports.size()];
-        System.arraycopy(reports.toArray(), 0, result, 0, reports.size());
+        int len = reportIDs.size();
+        int[] result = new int[len];
+        for (int i = 0; i < len; i++)
+            result[i] = reportIDs.get(i).intValue();
+
         return result;
     }
 
-    public synchronized void confirmReports(int[] confirmed) {
-        for (int reportID : confirmed)
-            reports.replace(reportID, true);
+    public synchronized void confirmReports(int id, int[] confirmed) {
+        lock.writeLock().lock();
+        for (int reportID : confirmed) {
+            reports.get(reportID).confirmed = true;
+            try {
+                String line = "Vehicle #" + id + " confirmed report #" + reportID + "\n";
+                Files.write(file, line.toString().getBytes(), StandardOpenOption.APPEND);
+            } catch (IOException e) {
+                // Do something
+            }
+        }
+        lock.writeLock().unlock();
     }
 
     public synchronized boolean canShutdown() {
-        for (boolean repStatus : reports.values()) {
-            if (!repStatus)
-                return false;
+        boolean result = true;
+        lock.readLock().lock();
+        for (Report report : reports.values()) {
+            if (!report.confirmed) {
+                result = false;
+                break;
+            }
         }
-        return true;
+        lock.readLock().unlock();
+        return result;
     }
 }
