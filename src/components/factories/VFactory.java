@@ -2,6 +2,10 @@ package components.factories;
 
 import utilities.VehicleType;
 
+/**
+ * Vehicle factory of factories class
+ * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
+ */
 public class VFactory {
     public static VehicleFactory getFactory(int wheel_count) {
         switch (wheel_count) {

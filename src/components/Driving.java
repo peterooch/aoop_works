@@ -9,7 +9,8 @@ import utilities.Timer;
  * Traffic control game
  * 
  * @author Sophie Krimberg
- *
+ * 
+ * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
  */
 public class Driving implements Timer {
     private Map map;
@@ -26,7 +27,10 @@ public class Driving implements Timer {
     public Driving(int junctionsNum, int numOfVehicles) {
         internalInit(new Map(junctionsNum), numOfVehicles);
     }
-
+    /**
+     * Constructor with a builder
+     * @param builder builder object
+     */
     public Driving(Builder builder) {
         internalInit(null, 0);
         map = builder.buildMap(this);

@@ -40,7 +40,7 @@ public class GameWindow extends JFrame {
     public GameWindow() {
         /** Set up general window properties */
         super("Road system");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(null);
         setSize(Point.getMaxX() + 40, Point.getMaxY() + 130);
 
@@ -53,6 +53,24 @@ public class GameWindow extends JFrame {
         setRoadPanel();
         setButtons();
     }
+    /**
+     * Close all threads and wait for all vehicles to finish confirming their reports
+     */
+    @Override
+    public void dispose() {
+        if (currDriving != null)
+            currDriving.stop();
+
+        JDialog dialog = new JDialog(this, "Waiting...", false);
+        dialog.add(new JLabel("Waiting for vehicles to confirm reports before closing"));
+        dialog.pack();
+        dialog.setVisible(true);
+        while (!BigBrother.getInst().getMoked().canShutdown()) {
+            // waiting
+        }
+        dialog.dispose();
+        super.dispose();
+    }
 
     /** Sets up the menu bar */
     private void setMenu() {
@@ -62,8 +80,6 @@ public class GameWindow extends JFrame {
         JMenu file = new JMenu("File (<- HW4 OPTIONS)");
         JMenuItem exit = new JMenuItem("Exit");
         exit.addActionListener(e -> {
-            if (currDriving != null)
-                currDriving.stop();
             dispose();
         });
         JMenuItem buildMap = new JMenuItem("Build map with Builder");
@@ -75,8 +91,21 @@ public class GameWindow extends JFrame {
             if (currDriving != null)
                 cloneCarDialog.setVisible(true);
         });
+        JMenuItem viewReports = new JMenuItem("View report file");
+        viewReports.addActionListener(e -> {
+            JDialog dialog = new JDialog(this, "Report File Viewer", true);
+            dialog.setSize(420, 500);
+            dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            
+            JTextArea reportText = new JTextArea(BigBrother.getInst().getMoked().getEntireFile());
+            JScrollPane scroll = new JScrollPane(reportText, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            scroll.setBounds(10, 10, 380, 450);
+            dialog.add(scroll);
+            dialog.setVisible(true);
+        });
         file.add(buildMap);
         file.add(cloneCar);
+        file.add(viewReports);
         file.add(exit);
         menuBar.add(file);
 

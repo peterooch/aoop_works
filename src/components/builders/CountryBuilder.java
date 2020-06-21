@@ -7,6 +7,11 @@ import components.factories.*;
 import utilities.Utilities;
 import utilities.VehicleType;
 
+/**
+ * CountryBuilder class
+ * 
+ * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
+ */
 public class CountryBuilder implements Builder, Utilities {
     private final static VehicleType[] prototypes = {
         VFactory.getFactory(2).getVehicle("fast"),

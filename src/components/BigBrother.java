@@ -1,7 +1,9 @@
 package components;
 
 import java.time.LocalTime;
-
+/**
+ * @author Baruch Rutman, ID 206119109, Campus Be'er Sheva
+ */
 public class BigBrother implements VehicleListener {
     /************************* SINGLETON CODE ***********************/
     /** Class Instance */
@@ -25,7 +27,7 @@ public class BigBrother implements VehicleListener {
     private BigBrother() {
         moked = new Moked("reports.txt");
     }
-
+    /** moked getter */
     public Moked getMoked() {
         return moked;
     }

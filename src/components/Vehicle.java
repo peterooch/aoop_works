@@ -45,7 +45,7 @@ public class Vehicle implements Timer, ThreadedComponent {
         status = null;
         listeners = new EventListenerList();
         if (getRandomBoolean())
-            speedRatio = getRandomDouble(1, 1.5);
+            speedRatio = new Random().nextDouble() * 0.5 + 1;
 
         allVehicles.put(id, this);
     }
@@ -302,7 +302,8 @@ public class Vehicle implements Timer, ThreadedComponent {
         else 
             speed = (double)vehicleType.getAverageSpeed();
 
-        return speed * speedRatio;
+        /** HACK */
+        return Math.abs(speed * speedRatio);
     }
 
     public void setSpeedRatio(double ratio) {
